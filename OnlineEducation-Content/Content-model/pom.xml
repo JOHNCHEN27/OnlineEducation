@@ -9,7 +9,6 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.lncanswer</groupId>
     <artifactId>Content-model</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Content-model</name>
@@ -22,6 +21,24 @@
             <artifactId>OnlineEducation-Base</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
+<!--        添加MP框架的依赖，消除错误-->
+        <!--存在mybatisplus注解添加相关注解保证不报错-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-annotation</artifactId>
+            <version>${mybatis-plus-boot-starter.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-core</artifactId>
+            <version>${mybatis-plus-boot-starter.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

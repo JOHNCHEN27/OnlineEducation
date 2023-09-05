@@ -12,7 +12,6 @@
 <!--    指定打包方式为pom，此功能为内容管理模块，负责聚合内容管理的各个子模块进行打包-->
      <packaging>pom</packaging>
 
-    <groupId>com.lncanswer</groupId>
     <artifactId>OnlineEducation-Content</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>OnlineEducation-Content</name>
