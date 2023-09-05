@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+<!--    继承父工程 进行依赖版本控制-->
+    <parent>
+        <groupId>com.lncanswer</groupId>
+        <artifactId>OnlineEducation-Parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../OnlineEducation-Parent</relativePath>
+    </parent>
+<!--    指定打包方式为pom，此功能为内容管理模块，负责聚合内容管理的各个子模块进行打包-->
+     <packaging>pom</packaging>
+
+    <groupId>com.lncanswer</groupId>
+    <artifactId>OnlineEducation-Content</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>OnlineEducation-Content</name>
+    <description>OnlineEducation-Content</description>
+
+<!--    内容管理模块做子模块的聚合-->
+    <modules>
+        <module>Content-api</module>
+        <module>Content-model</module>
+        <module>Content-service</module>
+    </modules>
+
+</project>
