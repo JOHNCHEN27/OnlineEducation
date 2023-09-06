@@ -1,0 +1,10 @@
+### 课程查询列表
+###用idea中的HTTPClient委托发送请求 测试接口  放在一个单独的地方存放 以便于保存
+### 将需要的主机ip放在json环境变量文件中，用{{}}引入 方便后续操作
+POST {{content_host}}/content/course/list?pageNo=2&pageSize=10
+Content-Type: application/json
+
+{
+  "auditStatus": "202002",
+  "courseName": ""
+}

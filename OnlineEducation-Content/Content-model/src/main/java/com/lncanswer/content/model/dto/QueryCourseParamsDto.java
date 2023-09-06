@@ -1,4 +1,4 @@
-package com.lncanswer.model.dto;
+package com.lncanswer.content.model.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

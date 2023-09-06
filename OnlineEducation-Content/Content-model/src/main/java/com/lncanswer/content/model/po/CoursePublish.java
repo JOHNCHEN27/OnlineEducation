@@ -1,4 +1,4 @@
-package com.lncanswer.model.po;
+package com.lncanswer.content.model.po;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
