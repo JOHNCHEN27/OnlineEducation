@@ -5,9 +5,9 @@ spring:
     name: system-service #微服务名称
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver  #连接服务器段的数据库
-    url: jdbc:mysql://192.168.101.65:3306/online_education_system?serverTimezone=UTC&userUnicode=true&useSSL=false
+    url: jdbc:mysql://47.113.185.5:3306/online_education_system?serverTimezone=UTC&userUnicode=true&useSSL=false
     username: root
-    password: mysql
+    password: root
   # 日志文件配置路径
   logging:
     config: classpath:log4j2-dev.xml
