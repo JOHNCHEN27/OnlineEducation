@@ -1,5 +1,6 @@
 package com.lncanswer.content.service.impl;
 
+import com.lncanswer.base.exception.OnlieEducationException;
 import com.lncanswer.content.mapper.CourseBaseMapper;
 import com.lncanswer.content.mapper.CourseCategoryMapper;
 import com.lncanswer.content.mapper.CourseMarketMapper;
@@ -111,7 +112,7 @@ public class CourseBaseInfoServieImple implements CourseBaseInfoService {
         if (charge.equals("201001")){
             //如果是收费 判断是否输入有效数值
             if (courseMarket.getPrice() == null || courseMarket.getPrice().floatValue() <=0){
-                throw new RuntimeException("课程为收费，价格不能为空并且价格必须大于0");
+                throw new OnlieEducationException("课程为收费，价格不能为空并且价格必须大于0");
             }
         }
         //根据id从课程营销表查询
