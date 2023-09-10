@@ -2,9 +2,12 @@ package com.lncanswer.content.api;
 
 import com.lncanswer.base.model.PageParams;
 import com.lncanswer.base.model.PageResult;
-import com.lncanswer.content.service.CourseBaseService;
+import com.lncanswer.content.model.dto.AddCourseDto;
+import com.lncanswer.content.model.dto.CourseBaseInfoDto;
 import com.lncanswer.content.model.dto.QueryCourseParamsDto;
 import com.lncanswer.content.model.po.CourseBase;
+import com.lncanswer.content.service.CourseBaseInfoService;
+import com.lncanswer.content.service.CourseBaseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class CourseBaseInfoController {
     @Autowired
     private CourseBaseService courseBaseService;
+
+    @Autowired
+    private CourseBaseInfoService courseBaseInfoService;
 
     /**
      * 查询课程信息分页接口   分页信息用PageParams实体类封装接收，
@@ -44,6 +50,14 @@ public class CourseBaseInfoController {
 
         PageResult<CourseBase> pageResult = courseBaseService.selectCourseBasePage(pageParams,queryCourseParamsDto);
            return pageResult;
+    }
+
+    @ApiOperation("新增课程接口")
+    @PostMapping("/course")
+    public CourseBaseInfoDto createCourseBase(@RequestBody AddCourseDto addCourseDto){
+        //因为机构认证还没有上线 暂时硬编码
+        Long companyId = 12312323L;
+        return courseBaseInfoService.createCourseBase(companyId,addCourseDto) ;
     }
 
 }

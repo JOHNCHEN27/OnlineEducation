@@ -1,8 +1,11 @@
 package com.lncanswer.content.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.lncanswer.content.model.dto.CourseCategoryTreeDto;
 import com.lncanswer.content.model.po.CourseCategory;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 
 /**
@@ -14,5 +17,10 @@ import org.apache.ibatis.annotations.Mapper;
  */
 @Mapper
 public interface CourseCategoryMapper extends BaseMapper<CourseCategory> {
+
+    /**
+     * 递归查询课程分类树形结点语句
+     */
+    public List<CourseCategoryTreeDto> selectTreeNodes(String id);
 
 }

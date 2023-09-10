@@ -18,4 +18,23 @@
         id, name, label, parentid, is_show, orderby, is_leaf
     </sql>
 
+    <!-- 递归查询课程分类树形结点 -->
+    <select id= "selectTreeNodes" resultType="com.lncanswer.content.model.dto.CourseCategoryTreeDto"
+     parameterType="string">
+     with recursive t1 as (
+         select * from course_category a where id = #{id}
+         union all
+         select b.* from course_category b inner join t1 on t1.id = b.parentid
+     )
+    select * from t1 order by t1.id,t1.orderby
+    </select>
+    <!-- t1 相当于一个表名 as括号里的第一条select 表示这个表的初始值，先查询这条数据放到t1表中
+         union all 后面的第二条select语句 表示查询t1表中的id数据 等于 b表中的parentid的数据
+         这里两条select语句都是查询课程分类表，给它们取别名
+         本质上是先将第一条select查询出来的语句 放在一个临时表t1中，然后第二条查询语句
+         也是查询课程分类表全部数据，将里面的数据parentid值 与t1中查询出来的数据的id值做比较
+         找出相等的数据 直到所有相等的数据找出来，union all 的select语句中where看作是结束
+         循环条件，   这里实现的是向下递归
+         递归查询课程分类树形结点比较灵活 它不限制层级
+         递归完成之后所有的数据都在临时表t1中，把最后查询出来-->
 </mapper>
