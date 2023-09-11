@@ -1,9 +1,11 @@
 package com.lncanswer.content.api;
 
+import com.lncanswer.base.exception.ValidationGroups;
 import com.lncanswer.base.model.PageParams;
 import com.lncanswer.base.model.PageResult;
 import com.lncanswer.content.model.dto.AddCourseDto;
 import com.lncanswer.content.model.dto.CourseBaseInfoDto;
+import com.lncanswer.content.model.dto.EditCourseDto;
 import com.lncanswer.content.model.dto.QueryCourseParamsDto;
 import com.lncanswer.content.model.po.CourseBase;
 import com.lncanswer.content.service.CourseBaseInfoService;
@@ -11,9 +13,8 @@ import com.lncanswer.content.service.CourseBaseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author LNC
@@ -52,12 +53,33 @@ public class CourseBaseInfoController {
            return pageResult;
     }
 
-    @ApiOperation("新增课程接口")
-    @PostMapping("/course")
-    public CourseBaseInfoDto createCourseBase(@RequestBody AddCourseDto addCourseDto){
+    @ApiOperation("新增课程接口") //@Validated注解（）括号内指定校验分组
+    @PostMapping("/course")  //定义好校验规则之后还需要开启校验 @Validated注解开启校验规则
+    public CourseBaseInfoDto createCourseBase(@RequestBody @Validated({
+        ValidationGroups.Inster.class}) AddCourseDto addCourseDto){
         //因为机构认证还没有上线 暂时硬编码
         Long companyId = 12312323L;
         return courseBaseInfoService.createCourseBase(companyId,addCourseDto) ;
     }
+
+
+    /**
+     * 查询课程基本信息 将数据回显到表单 设计到课程基本信息表 课程营销信息表
+     * @param courseId
+     * @return
+     */
+    @ApiOperation("根据课程id查询课程基础信息")
+    @GetMapping("/course/{courseId}")
+    public CourseBaseInfoDto getCourseBaseById(@PathVariable Long courseId){
+        CourseBaseInfoDto courseBaseInfoDto = courseBaseInfoService.getCourseBaseInfo(courseId);
+        return courseBaseInfoDto;
+    }
+
+    @ApiOperation("修改课程信息基础信息")
+    @PutMapping("/course")
+    public CourseBaseInfoDto modifyCourseBase (@RequestBody @Validated EditCourseDto editCourseDto){
+        return null;
+    }
+
 
 }

@@ -6,6 +6,7 @@ import com.lncanswer.content.mapper.CourseCategoryMapper;
 import com.lncanswer.content.mapper.CourseMarketMapper;
 import com.lncanswer.content.model.dto.AddCourseDto;
 import com.lncanswer.content.model.dto.CourseBaseInfoDto;
+import com.lncanswer.content.model.dto.EditCourseDto;
 import com.lncanswer.content.model.po.CourseBase;
 import com.lncanswer.content.model.po.CourseCategory;
 import com.lncanswer.content.model.po.CourseMarket;
@@ -134,7 +135,7 @@ public class CourseBaseInfoServieImple implements CourseBaseInfoService {
      * @param courseId
      * @return
      */
-    public CourseBaseInfoDto getCourseBaseInfo(long courseId){
+    public CourseBaseInfoDto getCourseBaseInfo(Long courseId){
         //查询课程基本信息
         CourseBase courseBase = courseBaseMapper.selectById(courseId);
         //如果为空 直接返回
@@ -162,5 +163,16 @@ public class CourseBaseInfoServieImple implements CourseBaseInfoService {
 
         //返回查询对象
         return courseBaseInfoDto;
+    }
+
+    /**
+     * 更新课程信息：课程基本信息、课程营销信息
+     * @param companyId
+     * @param dto
+     * @return
+     */
+    @Override
+    public CourseBaseInfoDto updateCourseBaseInfoDto(Long companyId, EditCourseDto dto) {
+        return null;
     }
 }
