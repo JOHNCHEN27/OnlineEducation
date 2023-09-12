@@ -4,7 +4,7 @@ import com.lncanswer.base.exception.ValidationGroups;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author LNC
@@ -16,6 +16,6 @@ import javax.validation.constraints.NotEmpty;
 public class EditCourseDto extends AddCourseDto {
 
     @ApiModelProperty(value = "课程id",required = true)
-    @NotEmpty(groups = {ValidationGroups.Update.class},message = "修改课程id不能为空")
+    @NotNull(groups = {ValidationGroups.Update.class},message = "修改课程id不能为空")
     private Long id;
 }

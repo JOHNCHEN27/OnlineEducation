@@ -15,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -166,13 +167,39 @@ public class CourseBaseInfoServieImple implements CourseBaseInfoService {
     }
 
     /**
-     * 更新课程信息：课程基本信息、课程营销信息
+     * 更新课程信息：课程基本信息、课程营销信息 调用封装的方法进行效率开发
      * @param companyId
      * @param dto
      * @return
      */
+    @Transactional
     @Override
     public CourseBaseInfoDto updateCourseBaseInfoDto(Long companyId, EditCourseDto dto) {
-        return null;
+        //获取课程ID
+        Long courseId = dto.getId();
+        //根据id查询课程基本信息
+        CourseBase courseBase = courseBaseMapper.selectById(courseId);
+        if (courseBase == null){
+            OnlieEducationException.cast("课程不存在");
+        }
+        //验证本机构只能修改本机构的课程
+        if (!courseBase.getCompanyId().equals(companyId)){
+            OnlieEducationException.cast("只能修改自己的课程信息");
+        }
+        //讲传进来的基本信息封装起来 更新课程基本信息
+        BeanUtils.copyProperties(dto,courseBase);
+        int i  = courseBaseMapper.updateById(courseBase);
+        if (i == 0){
+            OnlieEducationException.cast("更新课程基本信息失败");
+        }
+
+        //封装课程营销信息 更新
+        CourseMarket courseMarket = new CourseMarket();
+        BeanUtils.copyProperties(dto,courseMarket);
+        //保存课程营销信息 调用自定义方法
+        saveCourseMarket(courseMarket);
+        //根据id查询课程信息并返回
+        CourseBaseInfoDto courseBaseInfoDto = this.getCourseBaseInfo(courseId);
+        return courseBaseInfoDto;
     }
 }

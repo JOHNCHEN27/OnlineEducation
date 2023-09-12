@@ -37,4 +37,28 @@ Content-Type: application/json
 ###查询课程信息
 GET {{content_host}}/content/course/40
 
+###修改课程信息 包括课程基本信息、课程营销信息
+PUT {{content_host}}/content/course
+Content-Type: application/json
+
+{
+  "id" : "126",
+  "charge": "201001",
+  "price": 20,
+  "originalPrice":0,
+  "qq": "22333",
+  "wechat": "223344",
+  "phone": "13333333",
+  "validDays": 365,
+  "mt": "1-1",
+  "st": "1-1-1",
+  "name": "weq",
+  "pic": "",
+  "teachmode": "",
+  "users": "初学者1111111111",
+  "tags": "",
+  "grade": "204002",
+  "description": ""
+}
+
 
