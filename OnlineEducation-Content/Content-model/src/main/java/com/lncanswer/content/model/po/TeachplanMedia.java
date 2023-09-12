@@ -2,6 +2,7 @@ package com.lncanswer.content.model.po;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("teachplan_media")
+@ToString
 public class TeachplanMedia implements Serializable {
 
     private static final long serialVersionUID = 1L;

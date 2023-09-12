@@ -6,14 +6,18 @@ import com.lncanswer.content.mapper.CourseCategoryMapper;
 import com.lncanswer.content.mapper.CourseMarketMapper;
 import com.lncanswer.content.model.dto.AddCourseDto;
 import com.lncanswer.content.model.dto.CourseBaseInfoDto;
+import com.lncanswer.content.model.dto.EditCourseDto;
 import com.lncanswer.content.model.po.CourseBase;
 import com.lncanswer.content.model.po.CourseCategory;
 import com.lncanswer.content.model.po.CourseMarket;
 import com.lncanswer.content.service.CourseBaseInfoService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -24,6 +28,7 @@ import java.time.LocalDateTime;
  * @date 2023/9/10 19:07
  */
 @Service
+@Slf4j
 public class CourseBaseInfoServieImple implements CourseBaseInfoService {
     @Autowired
     private CourseCategoryMapper courseCategoryMapper;
@@ -31,6 +36,12 @@ public class CourseBaseInfoServieImple implements CourseBaseInfoService {
     private CourseMarketMapper courseMarketMapper;
     @Autowired
     private CourseBaseMapper courseBaseMapper;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    //redis缓存课程基本信息的Key
+    private  String queryRedis = "selectCourseBasePage";
 
     /**
      * 新增课程
@@ -81,6 +92,8 @@ public class CourseBaseInfoServieImple implements CourseBaseInfoService {
         if (insert<=0){
             throw new RuntimeException("新增课程基本信息失败");
         }
+        //插入之后将redis缓存更新 重写查询
+        redisTemplate.delete(queryRedis);
 
         //向课程营销表中保存课程营销信息
         CourseMarket courseMarket = new CourseMarket();
@@ -134,7 +147,7 @@ public class CourseBaseInfoServieImple implements CourseBaseInfoService {
      * @param courseId
      * @return
      */
-    public CourseBaseInfoDto getCourseBaseInfo(long courseId){
+    public CourseBaseInfoDto getCourseBaseInfo(Long courseId){
         //查询课程基本信息
         CourseBase courseBase = courseBaseMapper.selectById(courseId);
         //如果为空 直接返回
@@ -161,6 +174,46 @@ public class CourseBaseInfoServieImple implements CourseBaseInfoService {
         courseBaseInfoDto.setMtName(courseCategoryByMt.getName());
 
         //返回查询对象
+        return courseBaseInfoDto;
+    }
+
+    /**
+     * 更新课程信息：课程基本信息、课程营销信息 调用封装的方法进行效率开发
+     * @param companyId
+     * @param dto
+     * @return
+     */
+    @Transactional
+    @Override
+    public CourseBaseInfoDto updateCourseBaseInfoDto(Long companyId, EditCourseDto dto) {
+        //获取课程ID
+        Long courseId = dto.getId();
+        log.info("courseId:{}",courseId);
+        //根据id查询课程基本信息
+        CourseBase courseBase = courseBaseMapper.selectById(courseId);
+        if (courseBase == null){
+            OnlieEducationException.cast("课程不存在");
+        }
+        //验证本机构只能修改本机构的课程
+        if (!courseBase.getCompanyId().equals(companyId)){
+            OnlieEducationException.cast("只能修改自己的课程信息");
+        }
+        //讲传进来的基本信息封装起来 更新课程基本信息
+        BeanUtils.copyProperties(dto,courseBase);
+        int i  = courseBaseMapper.updateById(courseBase);
+        if (i == 0){
+            OnlieEducationException.cast("更新课程基本信息失败");
+        }
+        //更新之后的信息清空redis缓存
+        redisTemplate.delete(queryRedis);
+
+        //封装课程营销信息 更新
+        CourseMarket courseMarket = new CourseMarket();
+        BeanUtils.copyProperties(dto,courseMarket);
+        //保存课程营销信息 调用自定义方法
+        saveCourseMarket(courseMarket);
+        //根据id查询课程信息并返回
+        CourseBaseInfoDto courseBaseInfoDto = this.getCourseBaseInfo(courseId);
         return courseBaseInfoDto;
     }
 }

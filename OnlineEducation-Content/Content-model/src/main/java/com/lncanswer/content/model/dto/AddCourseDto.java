@@ -1,5 +1,6 @@
 package com.lncanswer.content.model.dto;
 
+import com.lncanswer.base.exception.ValidationGroups;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -18,12 +19,17 @@ import javax.validation.constraints.Size;
 public class AddCourseDto {
     /**
      * 由于请求参数与数据库表实体类有差异 需要自定义一个Dto类来接受请求参数 并用于返回
+     * controller层参数校验规则 利用Hibernate Validator完成
+     * NotEmpry注解是校验规则 Size注解也是校验规则，一个规定属性不能为空，一个规定属性的大小
      */
-    @NotEmpty(message = "课程名称不能为空")
+    //开启分组校验 规定为哪个分组
+    @NotEmpty(groups = {ValidationGroups.Inster.class},message = "添加课程名称不能为空")
+    @NotEmpty(groups = {ValidationGroups.Update.class},message = "修改课程名称不能为空")
+    //@NotEmpty(message = "课程名称不能为空")
     @ApiModelProperty(value = "课程名称", required = true)
     private String name;
 
-    @NotEmpty(message = "适用人群不能为空")
+    @NotEmpty(groups = {ValidationGroups.Inster.class},message = "适用人群不能为空")
     @Size(message = "适用人群内容过少",min = 10)
     @ApiModelProperty(value = "适用人群", required = true)
     private String users;

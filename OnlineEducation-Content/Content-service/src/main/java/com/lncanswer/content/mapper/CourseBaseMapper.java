@@ -3,6 +3,9 @@ package com.lncanswer.content.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lncanswer.content.model.po.CourseBase;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,4 +17,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface CourseBaseMapper extends BaseMapper<CourseBase> {
 
+    //查询所有信息添加到redis缓存中
+    @Select("select * from course_base ")
+    public List<CourseBase> selectAll();
 }
