@@ -2,9 +2,7 @@ package com.lncanswer.content.model.dto;
 
 import com.lncanswer.content.model.po.Teachplan;
 import com.lncanswer.content.model.po.TeachplanMedia;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
@@ -17,10 +15,12 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class TeachplanDto extends Teachplan {
     //课程计划关联的媒资信息
     public TeachplanMedia teachplanMedia;
 
     //子节点 子节点的类型也是一个树形结点
-    public List<TeachplanDto> teachPlanTreeDots ;
+    public List<TeachplanDto> teachPlanTreeNodes ;
 }

@@ -10,6 +10,7 @@ import com.lncanswer.content.model.dto.QueryCourseParamsDto;
 import com.lncanswer.content.model.po.CourseBase;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,6 +24,9 @@ public class CourseBaseServiceImpl implements CourseBaseService {
 
     @Autowired
     private CourseBaseMapper courseBaseMapper;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
     /**
      * 编写具体的分页查询条件
      * @param pageParams
@@ -54,6 +58,11 @@ public class CourseBaseServiceImpl implements CourseBaseService {
         PageResult<CourseBase> pageResult = new PageResult<>(page.getRecords(),page.getTotal(),
                 page.getCurrent(),page.getSize());
         //返回结果
+        if (pageResult != null)
+        {
+            //将数据缓存到redis中
+
+        }
         return pageResult;
     }
 }

@@ -3,31 +3,32 @@
 <mapper namespace="com.lncanswer.content.mapper.TeachplanMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.lncanswer.content.model.po.Teachplan">
-        <id column="id" property="id" />
-        <result column="pname" property="pname" />
-        <result column="parentid" property="parentid" />
-        <result column="grade" property="grade" />
-        <result column="media_type" property="mediaType" />
-        <result column="start_time" property="startTime" />
-        <result column="end_time" property="endTime" />
-        <result column="description" property="description" />
-        <result column="timelength" property="timelength" />
-        <result column="orderby" property="orderby" />
-        <result column="course_id" property="courseId" />
-        <result column="course_pub_id" property="coursePubId" />
-        <result column="status" property="status" />
-        <result column="is_preview" property="isPreview" />
-        <result column="create_date" property="createDate" />
-        <result column="change_date" property="changeDate" />
-    </resultMap>
+<!--    <resultMap id="BaseResultMap" type="com.lncanswer.content.model.po.Teachplan">-->
+<!--        <id column="id" property="id" />-->
+<!--        <result column="pname" property="pname" />-->
+<!--        <result column="parentid" property="parentid" />-->
+<!--        <result column="grade" property="grade" />-->
+<!--        <result column="media_type" property="mediaType" />-->
+<!--        <result column="start_time" property="startTime" />-->
+<!--        <result column="end_time" property="endTime" />-->
+<!--        <result column="description" property="description" />-->
+<!--        <result column="timelength" property="timelength" />-->
+<!--        <result column="orderby" property="orderby" />-->
+<!--        <result column="course_id" property="courseId" />-->
+<!--        <result column="course_pub_id" property="coursePubId" />-->
+<!--        <result column="status" property="status" />-->
+<!--        <result column="is_preview" property="isPreview" />-->
+<!--        <result column="create_date" property="createDate" />-->
+<!--        <result column="change_date" property="changeDate" />-->
+<!--    </resultMap>-->
 
-    <!-- 通用查询结果列 -->
-    <sql id="Base_Column_List">
-        id, pname, parentid, grade, media_type, start_time, end_time, description, timelength, orderby, course_id, course_pub_id, status, is_preview, create_date, change_date
-    </sql>
+<!--    &lt;!&ndash; 通用查询结果列 &ndash;&gt;-->
+<!--    <sql id="Base_Column_List">-->
+<!--        id, pname, parentid, grade, media_type, start_time, end_time, description, timelength, orderby, course_id, course_pub_id, status, is_preview, create_date, change_date-->
+<!--    </sql>-->
 
-    <!-- 课程分类树形结构查询映射结果-->
+    <!-- 课程分类树形结构查询映射结果
+        resultMap标签中，id、result、association、colletion标签必须安装顺序排列-->
     <resultMap id="treeNodeResultMap" type="com.lncanswer.content.model.dto.TeachplanDto">
         <!--一级结果映射 将列的属性映射的返回类型的属性字段上-->
         <id column="one_id" property="id"/>
@@ -40,8 +41,16 @@
         <result column="one_orderby"   property="orderby" />
         <result column="one_courseId"   property="courseId" />
         <result column="one_coursePubId"   property="coursePubId" />
+        <association property="teachplanMedia" javaType="com.lncanswer.content.model.po.TeachplanMedia">
+            <id  column="teachplanMeidaId"   property="id" />
+            <result column="mediaFilename"   property="mediaFilename" />
+            <result column="mediaId"   property="mediaId" />
+            <result column="mediaId"   property="mediaId" />
+            <result column="two_id"   property="teachplanId" />
+            <result column="two_courseId"   property="courseId" />
+        </association>
         <!-- 子节点映射，将多个子节点映射到父节点属性中 返回类型看父节点的子结点属性类型-->
-        <collection property="teachPlanTreeDots" ofType="com.lncanswer.content.model.dto.TeachplanDto">
+        <collection property="teachPlanTreeNodes" ofType="com.lncanswer.content.model.dto.TeachplanDto">
             <!--二级映射 -->
             <id     column="two_id"        property="id" />
             <result column="two_pname"      property="pname" />
@@ -53,16 +62,8 @@
             <result column="two_orderby"   property="orderby" />
             <result column="two_courseId"   property="courseId" />
             <result column="two_coursePubId"   property="coursePubId" />
-            <!-- 媒体属性 一对一映射-->
-            <association property="teachplanMedia" javaType="com.lncanswer.content.model.po.TeachplanMedia">
-                <result column="teachplanMeidaId"   property="id" />
-                <result column="mediaFilename"   property="" />
-                <result column="mediaId"   property="mediaId" />
-                <result column="two_id"   property="teachplanId" />
-                <result column="two_courseId"   property="courseId" />
-
-            </association>
         </collection>
+        <!-- 媒体属性 一对一映射-->
     </resultMap>
 
     <select id="selectTeachplanTreeNodes" resultMap="treeNodeResultMap"
@@ -98,7 +99,6 @@
         where one.parentid = 0 and one.course_id=#{value}
         order by one.orderby,
                  two.orderby
-
 
     </select>
 
