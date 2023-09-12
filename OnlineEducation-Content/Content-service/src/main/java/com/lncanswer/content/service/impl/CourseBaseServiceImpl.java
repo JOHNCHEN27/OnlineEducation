@@ -8,10 +8,14 @@ import com.lncanswer.content.mapper.CourseBaseMapper;
 import com.lncanswer.content.service.CourseBaseService;
 import com.lncanswer.content.model.dto.QueryCourseParamsDto;
 import com.lncanswer.content.model.po.CourseBase;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.time.Duration;
 
 /**
  * @author LNC
@@ -20,6 +24,7 @@ import org.springframework.stereotype.Service;
  * @date 2023/9/6 10:31
  */
 @Service
+@Slf4j
 public class CourseBaseServiceImpl implements CourseBaseService {
 
     @Autowired
@@ -35,6 +40,16 @@ public class CourseBaseServiceImpl implements CourseBaseService {
      */
     @Override
     public PageResult<CourseBase> selectCourseBasePage(PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto) {
+
+        //查询数据先从redis中查找 封装课程分页查询的key
+        String queryRedis = "selectCourseBasePage";
+        Object result = redisTemplate.opsForValue().get(queryRedis);
+        if (result != null) {
+            PageResult<CourseBase> pageResultRedis = new PageResult<CourseBase>();
+            BeanUtils.copyProperties(result, pageResultRedis);
+            log.info("查询到redis缓存");
+            return pageResultRedis;
+        }
 
         //创建分页  设置从当前页码开始 每页查询多少条数据
         Page<CourseBase> page = new Page<>(pageParams.getPageNo(), pageParams.getPageSize());
@@ -60,7 +75,8 @@ public class CourseBaseServiceImpl implements CourseBaseService {
         //返回结果
         if (pageResult != null)
         {
-            //将数据缓存到redis中
+            //将数据缓存到redis中 设置过期时间为五天
+            redisTemplate.opsForValue().set(queryRedis,pageResult, Duration.ofDays(5));
 
         }
         return pageResult;

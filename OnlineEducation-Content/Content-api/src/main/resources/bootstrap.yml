@@ -22,3 +22,11 @@ swagger:
   base-package: com.lncanswer.content   #扫描包的路径
   enabled: true #开启swagger功能
   version: 1.0.0
+
+#配置redis
+---
+spring:
+  redis:
+    host: localhost
+    password: root
+    port: 6379

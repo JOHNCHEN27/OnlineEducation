@@ -12,6 +12,7 @@ import com.lncanswer.content.service.CourseBaseInfoService;
 import com.lncanswer.content.service.CourseBaseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(value = "课程信息编辑接口",tags = "课程信息编辑接口") //swagger接口文档说明
 @RestController
+@Slf4j
 @RequestMapping("/course")
 public class CourseBaseInfoController {
     @Autowired
@@ -49,7 +51,6 @@ public class CourseBaseInfoController {
 //        List<CourseBase> courseBases = new ArrayList<>();
 //        courseBases.add(courseBase);
 //        PageResult<CourseBase> pageResult = new PageResult<>(courseBases,10,1,10);
-
         PageResult<CourseBase> pageResult = courseBaseService.selectCourseBasePage(pageParams,queryCourseParamsDto);
            return pageResult;
     }
@@ -59,7 +60,7 @@ public class CourseBaseInfoController {
     public CourseBaseInfoDto createCourseBase(@RequestBody @Validated({
         ValidationGroups.Inster.class}) AddCourseDto addCourseDto){
         //因为机构认证还没有上线 暂时硬编码
-        Long companyId = 12312323L;
+        Long companyId = 1232141411L;
         return courseBaseInfoService.createCourseBase(companyId,addCourseDto) ;
     }
 
@@ -80,7 +81,7 @@ public class CourseBaseInfoController {
     @PutMapping
     public CourseBaseInfoDto modifyCourseBase (@RequestBody @Validated
             ({ValidationGroups.Update.class})EditCourseDto editCourseDto){
-        Long companyId = 12312323L;
+        Long companyId = 1232141411L;
 
         return courseBaseInfoService.updateCourseBaseInfoDto(companyId,editCourseDto);
     }

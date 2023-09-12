@@ -42,7 +42,7 @@ PUT {{content_host}}/content/course
 Content-Type: application/json
 
 {
-  "id" : "126",
+  "id" : "1",
   "charge": "201001",
   "price": 20,
   "originalPrice":0,
@@ -52,7 +52,7 @@ Content-Type: application/json
   "validDays": 365,
   "mt": "1-1",
   "st": "1-1-1",
-  "name": "weq",
+  "name": "java",
   "pic": "",
   "teachmode": "",
   "users": "初学者1111111111",

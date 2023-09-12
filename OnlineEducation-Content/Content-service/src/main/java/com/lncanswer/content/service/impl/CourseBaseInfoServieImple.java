@@ -11,9 +11,11 @@ import com.lncanswer.content.model.po.CourseBase;
 import com.lncanswer.content.model.po.CourseCategory;
 import com.lncanswer.content.model.po.CourseMarket;
 import com.lncanswer.content.service.CourseBaseInfoService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,7 @@ import java.time.LocalDateTime;
  * @date 2023/9/10 19:07
  */
 @Service
+@Slf4j
 public class CourseBaseInfoServieImple implements CourseBaseInfoService {
     @Autowired
     private CourseCategoryMapper courseCategoryMapper;
@@ -33,6 +36,12 @@ public class CourseBaseInfoServieImple implements CourseBaseInfoService {
     private CourseMarketMapper courseMarketMapper;
     @Autowired
     private CourseBaseMapper courseBaseMapper;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    //redis缓存课程基本信息的Key
+    private  String queryRedis = "selectCourseBasePage";
 
     /**
      * 新增课程
@@ -83,6 +92,8 @@ public class CourseBaseInfoServieImple implements CourseBaseInfoService {
         if (insert<=0){
             throw new RuntimeException("新增课程基本信息失败");
         }
+        //插入之后将redis缓存更新 重写查询
+        redisTemplate.delete(queryRedis);
 
         //向课程营销表中保存课程营销信息
         CourseMarket courseMarket = new CourseMarket();
@@ -177,6 +188,7 @@ public class CourseBaseInfoServieImple implements CourseBaseInfoService {
     public CourseBaseInfoDto updateCourseBaseInfoDto(Long companyId, EditCourseDto dto) {
         //获取课程ID
         Long courseId = dto.getId();
+        log.info("courseId:{}",courseId);
         //根据id查询课程基本信息
         CourseBase courseBase = courseBaseMapper.selectById(courseId);
         if (courseBase == null){
@@ -192,6 +204,8 @@ public class CourseBaseInfoServieImple implements CourseBaseInfoService {
         if (i == 0){
             OnlieEducationException.cast("更新课程基本信息失败");
         }
+        //更新之后的信息清空redis缓存
+        redisTemplate.delete(queryRedis);
 
         //封装课程营销信息 更新
         CourseMarket courseMarket = new CourseMarket();
