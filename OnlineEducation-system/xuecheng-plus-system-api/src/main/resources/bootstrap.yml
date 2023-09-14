@@ -1,7 +1,7 @@
 server:
   servlet:
     context-path: /system
-  port: 63110
+  port: 56110   #配置63110 如端口冲突临时更改调用
 #微服务配置
 spring:
   application:
