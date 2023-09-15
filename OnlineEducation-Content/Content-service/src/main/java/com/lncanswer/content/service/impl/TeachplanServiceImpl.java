@@ -8,12 +8,14 @@ import com.lncanswer.content.model.dto.TeachplanDto;
 import com.lncanswer.content.model.po.Teachplan;
 import com.lncanswer.content.model.po.TeachplanMedia;
 import com.lncanswer.content.service.TeachplanService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author LNC
@@ -21,6 +23,7 @@ import java.util.List;
  * @description
  * @date 2023/9/12 13:16
  */
+@Slf4j
 @Service
 public class TeachplanServiceImpl implements TeachplanService {
     @Autowired
@@ -95,6 +98,100 @@ public class TeachplanServiceImpl implements TeachplanService {
         return i;
 
 
+    }
+
+    /**
+     * 将课程计划向上移动：和同级目录课程计划交换位置，将两个课程计划的排序字段进行交换
+     * @param id
+     * @param
+     */
+    @Override
+    public String moveupTeachplan(Integer id) {
+        //通过id查找当前课程计划
+        Teachplan teachplan = teachplanMapper.selectById(id);
+        if (teachplan.getOrderby() == 1){
+            return "无法上移";
+        }
+        //通过parentId找到所有同极目录结点的集合
+        List<Teachplan> teachplanList = getTeachplanList(teachplan);
+        teachplanList.stream().map((item) ->{
+            //判断当前的同级目录结点是不是课程计划对象的前一个
+           if (item.getOrderby() == teachplan.getOrderby()-1){
+               //item是第三方变量 对它改变不会引起对数据改变
+               //如果是则将他们俩的排序数字进行交换
+               swap(teachplan, item);
+           }
+            return item;
+        }).collect(Collectors.toList());
+       return null;
+    }
+
+
+    /**
+     * 将课程计划向下移动，交换同级目录下的课程计划
+     * @param id
+     * @param
+     * @return
+     */
+    @Override
+    public String movedownTeachplan(Integer id) {
+        //找当前课程计划的同级目录
+        Teachplan teachplan = teachplanMapper.selectById(id);
+        List<Teachplan> teachplanList = getTeachplanList(teachplan);
+          teachplanList.stream().map((item) ->{
+            if (item.getOrderby() == (teachplan.getOrderby()+1)){
+                //等于则上面当前遍历课程计划是下一级 进行交换
+                swap(teachplan,item);
+            }
+            return item;
+        }).collect(Collectors.toList());
+        return null;
+    }
+
+    /**
+     * 将两个同级结点的顺序进行交换
+     * @param teachplan
+     * @param item
+     */
+    private  void swap(Teachplan teachplan, Teachplan item) {
+        //获取下一个课程计划的order号  1 2
+        int temp = item.getOrderby();
+        LambdaQueryWrapper<Teachplan> queryWrapper = getTeachplanLambdaQueryWrapper(item);
+        item.setOrderby(teachplan.getOrderby());
+        //更新
+        teachplanMapper.update(item,queryWrapper);
+
+        LambdaQueryWrapper<Teachplan> queryWrapper1 = getTeachplanLambdaQueryWrapper(teachplan);
+        teachplan.setOrderby(temp);
+        teachplanMapper.update(teachplan,queryWrapper1);
+
+    }
+
+    /**
+     * lambda表达式构造查询条件
+     * @param item
+     * @return
+     */
+    private static LambdaQueryWrapper<Teachplan> getTeachplanLambdaQueryWrapper(Teachplan item) {
+        LambdaQueryWrapper<Teachplan> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Teachplan::getCourseId, item.getCourseId());
+        queryWrapper.eq(Teachplan::getParentid, item.getParentid());
+        queryWrapper.eq(Teachplan::getId, item.getId());
+        return queryWrapper;
+    }
+
+
+    /**
+     * 查找同级结点集合
+     * @param teachplan
+     * @return
+     */
+    private List<Teachplan> getTeachplanList(Teachplan teachplan) {
+        LambdaQueryWrapper<Teachplan> lamQuery = new LambdaQueryWrapper<>();
+        lamQuery.eq(Teachplan::getParentid, teachplan.getParentid());
+        lamQuery.eq(Teachplan::getCourseId,teachplan.getCourseId());
+        List<Teachplan> teachplanList = teachplanMapper.selectList(lamQuery);
+        return teachplanList;
     }
 
     /**

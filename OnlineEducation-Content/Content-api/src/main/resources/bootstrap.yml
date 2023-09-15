@@ -1,7 +1,7 @@
 server:
   servlet:
     context-path: /content #接口的根路径 --指定所有接口的第一个路径
-  port: 64040
+  port: 60010
 #微服务配置
 spring:
   application:

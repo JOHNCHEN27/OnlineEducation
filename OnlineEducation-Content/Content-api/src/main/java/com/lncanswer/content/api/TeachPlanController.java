@@ -56,6 +56,11 @@ public class TeachPlanController {
         teachplanService.saveTeachplan(teachplanDto);
     }
 
+    /**
+     * 删除课程计划
+     * @param id
+     * @return
+     */
     @ApiOperation(value = "删除课程计划",notes = "课程计划id不能为空")
     @DeleteMapping("/{id}")
     public ResultClass deleteTeachplanById(@PathVariable ("id") @Validated({
@@ -65,6 +70,38 @@ public class TeachPlanController {
             return new ResultClass();
         }
         return ResultClass.error("课程计划信息还有子级信息，无法操作");
+    }
 
+    /**
+     * 课程计划向下移动
+     * @param id
+     * @param
+     * @return
+     */
+    @PostMapping("/movedown/{id}")
+    public ResultClass swapTeachplanOrder(@PathVariable ("id") Integer id){
+        if (id != null ){
+         teachplanService.movedownTeachplan(id);
+         return ResultClass.success();
+        }
+        return ResultClass.error("参数错误请重试");
+    }
+
+    /**
+     * 课程计划向上移动
+     * @param id
+     * @param
+     * @return
+     */
+    @PostMapping("/moveup/{id}")
+    public ResultClass moveupTeachplan(@PathVariable("id") Integer id){
+        if (id != null ){
+            String s = teachplanService.moveupTeachplan(id);
+            if (s == null){
+                return ResultClass.success();
+            }
+            return ResultClass.error(s);
+        }
+        return ResultClass.error("参数错误请重试");
     }
 }

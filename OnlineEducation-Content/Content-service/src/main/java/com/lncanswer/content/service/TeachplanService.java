@@ -18,4 +18,8 @@ public interface TeachplanService {
     public void saveTeachplan(SaveTeachplanDto saveTeachplanDto);
 
     public int  deleteTeachplanById(Integer id);
+
+    public String moveupTeachplan(Integer id);
+
+    public String movedownTeachplan(Integer id);
 }
