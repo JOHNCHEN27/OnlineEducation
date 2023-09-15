@@ -1,0 +1,16 @@
+###测试添加教师
+PUT {{content_host}}/content/courseTeacher
+Content-Type:  application/json
+
+{
+  "id": 24,
+  "courseId": 1,
+  "teacherName": "wu老师",
+  "position": "高级教师",
+  "introduction": "教师简介",
+  "photograph": null,
+  "createDate": null
+}
+
+###测试删除教师
+DELETE {{content_host}}/content/courseTeacher/course/1/25

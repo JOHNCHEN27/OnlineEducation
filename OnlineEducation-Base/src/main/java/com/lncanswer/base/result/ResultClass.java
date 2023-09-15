@@ -25,6 +25,11 @@ public class ResultClass {
        resultClass.setData(data);
        return resultClass;
     }
+    public static final ResultClass success(Object data){
+        ResultClass resultClass= new ResultClass();
+        resultClass.setData(data);
+        return resultClass;
+    }
 
     //失败返回错误信息
     public static final ResultClass error(String msg){
