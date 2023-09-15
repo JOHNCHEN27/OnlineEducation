@@ -1,15 +1,12 @@
 package com.lncanswer.content.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.lncanswer.base.exception.OnlieEducationException;
-import com.lncanswer.content.mapper.CourseBaseMapper;
-import com.lncanswer.content.mapper.CourseCategoryMapper;
-import com.lncanswer.content.mapper.CourseMarketMapper;
+import com.lncanswer.content.mapper.*;
 import com.lncanswer.content.model.dto.AddCourseDto;
 import com.lncanswer.content.model.dto.CourseBaseInfoDto;
 import com.lncanswer.content.model.dto.EditCourseDto;
-import com.lncanswer.content.model.po.CourseBase;
-import com.lncanswer.content.model.po.CourseCategory;
-import com.lncanswer.content.model.po.CourseMarket;
+import com.lncanswer.content.model.po.*;
 import com.lncanswer.content.service.CourseBaseInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -39,6 +36,10 @@ public class CourseBaseInfoServieImple implements CourseBaseInfoService {
 
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private TeachplanMapper teachplanMapper;
+    @Autowired
+    private CourseTeacherMapper courseTeacherMapper;
 
     //redis缓存课程基本信息的Key
     private  String queryRedis = "selectCourseBasePage";
@@ -215,5 +216,33 @@ public class CourseBaseInfoServieImple implements CourseBaseInfoService {
         //根据id查询课程信息并返回
         CourseBaseInfoDto courseBaseInfoDto = this.getCourseBaseInfo(courseId);
         return courseBaseInfoDto;
+    }
+
+    /**
+     * 删除课程需要删除课程相关的基本信息、营销信息、课程计划、课程教师信息。
+     * @param courseId
+     * @return
+     */
+    @Transactional //涉及到多个表的操作 需要加上事务管理，避免数据不一致
+    @Override
+    public int deleteCourseBaseInfo(Long companyId,Long courseId) {
+        //删除课程时，根据机构id 确保机构只能删除自己栏目下的课程
+        CourseBase courseBase = courseBaseMapper.selectById(courseId);
+        if (courseBase!=null && courseBase.getCompanyId().equals(companyId)){
+            //课程机构id和传入的机构id相等说明是同一机构下
+            courseBaseMapper.deleteById(courseId);
+            //根据课程id查找相应的课程营销信息并删除 课程营销信息的id就是课程id
+            courseMarketMapper.deleteById(courseId);
+            //删除课程计划信息
+            LambdaQueryWrapper<Teachplan> lamQuery = new LambdaQueryWrapper<>();
+            lamQuery.eq(Teachplan::getCourseId,courseId);
+            teachplanMapper.delete(lamQuery);
+            //删除相应课程的教师信息
+            LambdaQueryWrapper<CourseTeacher> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(CourseTeacher::getCourseId,courseId);
+            courseTeacherMapper.delete(queryWrapper);
+            return 1;
+        }
+        return 0;
     }
 }
