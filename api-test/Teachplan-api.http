@@ -11,3 +11,6 @@ Content-Type: application/json
 
 ###
 DELETE {{content_host}}/content/teachplan/294
+
+###
+DELETE {{content_host}}/content/course/130

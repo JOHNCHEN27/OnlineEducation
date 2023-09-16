@@ -87,7 +87,7 @@ public class CourseBaseInfoController {
     @PutMapping
     public CourseBaseInfoDto modifyCourseBase (@RequestBody @Validated
             ({ValidationGroups.Update.class})EditCourseDto editCourseDto){
-        Long companyId = 1232141411L;
+        Long companyId = 1232141425L;
 
         return courseBaseInfoService.updateCourseBaseInfoDto(companyId,editCourseDto);
     }
