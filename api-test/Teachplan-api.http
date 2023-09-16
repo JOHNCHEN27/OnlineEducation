@@ -1,0 +1,16 @@
+### 新增课程计划--章
+POST {{content_host}}/content/teachplan
+Content-Type: application/json
+
+{
+  "courseId" : 74,
+  "parentid": 0,
+  "grade" : 1,
+  "pname" : "新章名称 1"
+}
+
+###
+DELETE {{content_host}}/content/teachplan/294
+
+###
+DELETE {{content_host}}/content/course/130

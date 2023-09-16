@@ -3,6 +3,7 @@ package com.lncanswer.content.api;
 import com.lncanswer.base.exception.ValidationGroups;
 import com.lncanswer.base.model.PageParams;
 import com.lncanswer.base.model.PageResult;
+import com.lncanswer.base.result.ResultClass;
 import com.lncanswer.content.model.dto.AddCourseDto;
 import com.lncanswer.content.model.dto.CourseBaseInfoDto;
 import com.lncanswer.content.model.dto.EditCourseDto;
@@ -77,13 +78,37 @@ public class CourseBaseInfoController {
         return courseBaseInfoDto;
     }
 
+    /**
+     * 根据机构id 课程id等修改课程基础信息、课程营销信息
+     * @param editCourseDto
+     * @return
+     */
     @ApiOperation("修改课程信息基础信息")
     @PutMapping
     public CourseBaseInfoDto modifyCourseBase (@RequestBody @Validated
             ({ValidationGroups.Update.class})EditCourseDto editCourseDto){
-        Long companyId = 1232141411L;
+        Long companyId = 1232141425L;
 
         return courseBaseInfoService.updateCourseBaseInfoDto(companyId,editCourseDto);
+    }
+
+    /**
+     * 删除课程需要删除课程相关的基本信息、营销信息、课程计划、课程教师信息。
+     * @param courseId
+     * @return
+     */
+    @ApiOperation(value ="删除课程及课程相关信息",notes = "课程id不为空")
+    @DeleteMapping("/{courseId}")
+    public ResultClass deleteCourseInfo(@PathVariable("courseId") Long courseId){
+        //因为机构认证还没有上线 暂时硬编码
+        Long companyId = 12312323L;
+        if (courseId !=null) {
+            int temp = courseBaseInfoService.deleteCourseBaseInfo(companyId, courseId);
+            if (temp != 0){
+                return ResultClass.success();
+            }
+        }
+        return null;
     }
 
 

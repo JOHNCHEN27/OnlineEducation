@@ -34,4 +34,7 @@ public interface CourseBaseInfoService {
      * @return
      */
     public CourseBaseInfoDto updateCourseBaseInfoDto(Long companyId, EditCourseDto dto);
+
+    //删除课程及相关课程信息
+    public int deleteCourseBaseInfo(Long companyId,Long courseId);
 }

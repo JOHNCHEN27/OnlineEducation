@@ -1,8 +1,10 @@
 package com.lncanswer.content.model.po;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.lncanswer.base.exception.ValidationGroups;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -22,12 +24,17 @@ public class CourseTeacher implements Serializable {
     /**
      * 主键
      */
+    @NotNull(groups = {ValidationGroups.Update.class},message = "教师id不能为空")
+    @NotNull(groups = {ValidationGroups.Delete.class},message = "教师id不能为空")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
      * 课程标识
      */
+    @NotNull(groups = {ValidationGroups.Update.class},message = "课程id不能为空")
+    @NotNull(groups = {ValidationGroups.Delete.class},message = "课程id不能为空")
+    @NotNull(groups = {ValidationGroups.Inster.class},message = "课程id不能为空")
     private Long courseId;
 
     /**
