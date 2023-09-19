@@ -1,7 +1,7 @@
 package com.xuecheng.media.api;
 
-import com.xuecheng.base.model.PageParams;
-import com.xuecheng.base.model.PageResult;
+import com.lncanswer.base.model.PageParams;
+import com.lncanswer.base.model.PageResult;
 import com.xuecheng.media.model.dto.QueryMediaParamsDto;
 import com.xuecheng.media.model.po.MediaFiles;
 import com.xuecheng.media.service.MediaFileService;
