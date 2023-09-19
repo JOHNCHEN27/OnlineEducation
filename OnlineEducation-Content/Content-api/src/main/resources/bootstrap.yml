@@ -2,28 +2,28 @@
 spring:
   application:
     name: content-api #微服务名称
-#配置redis
-
-#配置nacos
----
-spring:
   cloud:
     nacos:
       server-addr: localhost:8848 #这里暂时先用本地nacos
       discovery:
+         namespace: e101b790-f564-479a-af1e-a065bc11f7e1  #nacos命名空间ID
+         group: online-education-project #nacos分组
+      config:
         namespace: e101b790-f564-479a-af1e-a065bc11f7e1  #nacos命名空间ID
         group: online-education-project #nacos分组
-      config:
-        namespace: e101b790-f564-479a-af1e-a065bc11f7e1
-        group: online-education-project
         file-extension: yaml
         refresh-enabled: true
-        extension-configs: #这里因为apim模块引用了service模块，所有需要读取nacos上service的配置
-          - data-id: content-service-${spring.profiles.active}.yaml
+        extension-configs:
+            #这里因为apim模块引用了service模块，所有需要读取nacos上service的配置
+            data-id: content-service-${spring.profiles.active}.yaml
             group: online-education-project
             refresh: true
+        shared-configs:  #共享公用配置
+            - data-id: common-${spring.profiles.active}.yaml
+              group: online-education-common
+              refresh: true
   profiles:
-    active: dev
+      active: dev
 
-
+#配置nacos 只需要把偶尔需要更改的配置或者更改频率很高的配置放到nacos进行管理
 

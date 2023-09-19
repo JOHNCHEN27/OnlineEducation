@@ -3,18 +3,27 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>xuecheng-plus-system</artifactId>
+        <artifactId>Online-Education-media</artifactId>
         <groupId>com.lncanswer</groupId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>xuecheng-plus-system-api</artifactId>
-    <name>xuecheng-plus-system-api</name>
-    <description>xuecheng-plus-system-api</description>
+    <artifactId>online-education-media-api</artifactId>
+    <name>online-education-media-api</name>
 
     <dependencies>
         <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.lncanswer</groupId>
-            <artifactId>xuecheng-plus-system-service</artifactId>
+            <artifactId>online-education-media-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
@@ -29,6 +38,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
