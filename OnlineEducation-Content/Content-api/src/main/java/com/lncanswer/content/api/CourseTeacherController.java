@@ -19,7 +19,7 @@ import java.util.List;
  * @description 课程教师控制器
  * @date 2023/9/15 16:16
  */
-@Api(value = "课程教师功能")
+@Api(value = "课程教师功能接口",tags = "课程教师接口")
 @RestController
 @Slf4j
 @RequestMapping

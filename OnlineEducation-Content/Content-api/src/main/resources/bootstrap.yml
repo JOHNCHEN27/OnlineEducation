@@ -1,32 +1,29 @@
-server:
-  servlet:
-    context-path: /content #接口的根路径 --指定所有接口的第一个路径
-  port: 60010
 #微服务配置
 spring:
   application:
     name: content-api #微服务名称
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://47.113.185.5:3306/online_education_content?serverTimezone=UTC&userUnicode=true&useSSL=false
-    username: root
-    password: root
-  # 日志文件配置路径
-  logging:
-    config: classpath:log4j2-dev.xml
+  cloud:
+    nacos:
+      server-addr: localhost:8848 #这里暂时先用本地nacos
+      discovery:
+         namespace: e101b790-f564-479a-af1e-a065bc11f7e1  #nacos命名空间ID
+         group: online-education-project #nacos分组
+      config:
+        namespace: e101b790-f564-479a-af1e-a065bc11f7e1  #nacos命名空间ID
+        group: online-education-project #nacos分组
+        file-extension: yaml
+        refresh-enabled: true
+        extension-configs:
+            #这里因为apim模块引用了service模块，所有需要读取nacos上service的配置
+            data-id: content-service-${spring.profiles.active}.yaml
+            group: online-education-project
+            refresh: true
+        shared-configs:  #共享公用配置
+            - data-id: common-${spring.profiles.active}.yaml
+              group: online-education-common
+              refresh: true
+  profiles:
+      active: dev
 
-#配置swagger生成接口文档
-swagger:
-  title: "在线教育内容管理系统"
-  description: "内容系统管理系统对课程相关信息进行管理"
-  base-package: com.lncanswer.content   #扫描包的路径
-  enabled: true #开启swagger功能
-  version: 1.0.0
+#配置nacos 只需要把偶尔需要更改的配置或者更改频率很高的配置放到nacos进行管理
 
-#配置redis
----
-spring:
-  redis:
-    host: localhost
-    password: root
-    port: 6379

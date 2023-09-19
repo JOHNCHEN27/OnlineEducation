@@ -2,11 +2,19 @@
 spring:
   application:
     name: content-service
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver  #此处配置的是aliyun服务器
-    url: jdbc:mysql://47.113.185.5:3306/online_education_content?serverTimezone=UTC&userUnicode=true&useSSL=false
-    username: root
-    password: root
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+      discovery:
+        namespace: e101b790-f564-479a-af1e-a065bc11f7e1
+        group: online-education-project
+      config:
+        namespace: e101b790-f564-479a-af1e-a065bc11f7e1  #nacos配置的命名空间
+        group: online-education-project #nacos配置的组
+        file-extension: yaml #nacos配置的后缀
+        refresh-enabled: true
+  profiles: #profiles默认为True
+    active: dev
   redis:
     host: localhost
     password: root

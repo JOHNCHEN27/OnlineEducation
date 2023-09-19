@@ -2,23 +2,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-<!--    继承内容管理父工程-->
     <parent>
+        <artifactId>Online-Education-media</artifactId>
         <groupId>com.lncanswer</groupId>
-        <artifactId>OnlineEducation-Content</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
-
-    <artifactId>Content-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>Content-service</name>
-    <description>Content-service</description>
+    <artifactId>online-education-media-service</artifactId>
+    <name>online-education-media-service</name>
 
     <dependencies>
-<!--       业务模块依赖数据模型-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.lncanswer</groupId>
-            <artifactId>Content-model</artifactId>
+            <artifactId>online-education-media-model</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
@@ -33,10 +33,6 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-context</artifactId>
         </dependency>
         <!-- Spring Boot 集成 Junit -->
         <dependency>
@@ -62,12 +58,7 @@
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <version>1.1.12</version>
-        </dependency>
-    </dependencies>
 
+    </dependencies>
 
 </project>

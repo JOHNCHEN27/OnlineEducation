@@ -1,7 +1,5 @@
 #\u5FAE\u670D\u52A1\u914D\u7F6E
 spring:
-  application:
-    name: system-api
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://47.113.185.5:3306/online_education_system?serverTimezone=UTC&userUnicode=true&useSSL=false

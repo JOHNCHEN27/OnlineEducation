@@ -11,14 +11,18 @@ spring:
     url: jdbc:mysql://47.113.185.5:3306/online_education_system?serverTimezone=UTC&userUnicode=true&useSSL=false
     username: root
     password: root
-# 日志文件配置路径
-logging:
-  config: classpath:log4j2-dev.xml
+  cloud:
+    nacos:
+      server-addr: localhost:8848 #先用本地nacos
+      discovery:
+        namespace: e101b790-f564-479a-af1e-a065bc11f7e1   #nacos命名空间
+        group: online-education-project #naocs分组
+      config:
+        shared-configs:
+          - data-id: common-${spring.profiles.active}.yaml
+            group: online-education-common
+            refresh: true
+  profiles:
+    active: dev
 
-# swagger 文档配置
-swagger:
-  title: "学成在线系统管理"
-  description: "系统管理接口"
-  base-package: com.xuecheng.system
-  enabled: true
-  version: 1.0.0
+
