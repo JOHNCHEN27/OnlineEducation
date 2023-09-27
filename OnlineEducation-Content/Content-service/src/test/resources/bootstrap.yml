@@ -16,8 +16,7 @@ spring:
   profiles: #profiles默认为True
     active: dev
   redis:
-    host: localhost
-    password: root
+    host: 47.113.185.5
     port: 6379
 
   # 日志文件配置路径
