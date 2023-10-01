@@ -4,6 +4,8 @@ package com.xuecheng.media.service;
 import com.lncanswer.base.model.PageParams;
 import com.lncanswer.base.model.PageResult;
 import com.xuecheng.media.model.dto.QueryMediaParamsDto;
+import com.xuecheng.media.model.dto.UploadFileParamsDto;
+import com.xuecheng.media.model.dto.UploadFileResultDto;
 import com.xuecheng.media.model.po.MediaFiles;
 
 /**
@@ -24,5 +26,17 @@ public interface MediaFileService {
  */
  public PageResult<MediaFiles> queryMediaFiels(Long companyId, PageParams pageParams, QueryMediaParamsDto queryMediaParamsDto);
 
+
+ /**
+  * 上传文件
+  * @param companyId  机构id
+  * @param uploadFileParamsDto 接受请求参数类
+  * @param localFilePath 文件磁盘路径
+  * @return
+  */
+ public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath);
+
+ //代理对象方法 事务优化
+ public MediaFiles addMediaFilesToDb(Long companyId, String fileMd5, UploadFileParamsDto uploadFileParamsDto, String bucketFiles, String objectName);
 
 }
