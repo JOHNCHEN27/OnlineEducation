@@ -1,10 +1,8 @@
 package com.xuecheng.media.config;
 
 import io.minio.MinioClient;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 /**
  * @author LNC
@@ -13,22 +11,23 @@ import org.springframework.stereotype.Component;
  * @date 2023/10/1 11:24
  */
 @Configuration
-@Component
-@ConfigurationProperties(prefix = "minio")
 public class MinioConfig {
-    //使用ConfigurationProperties指定配置文件，进行属性注入，需要保证属性名一直
-    private String endpoint;
+    //使用Value指定配置文件，进行属性注入，需要保证属性名一直
+    //@Value("${minio.endpoint}")
+    private String endpoint = "http://47.113.185.5:9000";
 
-    private String accesskey;
+    //@Value("${minio.accessKey}")
+    private String accessKey = "@lncminio007";
 
-    private String secretkey;
+    //@Value("${minio.secretKey}")
+    private String secretKey = "@lncminio007";
 
     //获取用户认证委托注册为Bean
     @Bean
     public MinioClient minioClient() {
         MinioClient minioClient = MinioClient.builder()
                 .endpoint(endpoint)
-                .credentials(accesskey, secretkey)
+                .credentials(accessKey, secretKey)
                 .build();
         return minioClient;
     }
