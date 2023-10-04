@@ -67,7 +67,8 @@ public class RestResponse<T> {
    *
    * @return RestResponse Rest服务封装相应数据
    */
-  public static <T> RestResponse<T> success(T result) {
+  public static <T> RestResponse<T>
+  success(T result) {
    RestResponse<T> response = new RestResponse<T>();
    response.setResult(result);
    return response;
@@ -92,5 +93,6 @@ public class RestResponse<T> {
   public Boolean isSuccessful() {
    return this.code == 0;
   }
+
 
  }

@@ -1,7 +1,7 @@
 package com.lncanswer.content.service;
 
-import com.lncanswer.content.model.po.CourseBase;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lncanswer.content.model.po.CourseBase;
 
 /**
  * <p>
