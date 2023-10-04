@@ -32,7 +32,6 @@ public class BigFileTest {
     public void testUploadBigFile() throws IOException {
         //源文件路径
         File sourceFile = new File("E:\\Java\\ProjectResources\\XueChengOnline\\images\\test.mp4");
-
         //分块文件存储路径
         String chunkPath = "E:\\Java\\ProjectResources\\XueChengOnline\\Media\\";
         //如果路径目录不存在则创建
