@@ -6,16 +6,16 @@
         <artifactId>Online-Education-media</artifactId>
         <groupId>com.lncanswer</groupId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>online-education-media-model</artifactId>
     <name>online-education-media-model</name>
+    <version>0.0.1-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
-        <groupId>com.lncanswer</groupId>
-        <artifactId>OnlineEducation-Base</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+            <groupId>com.lncanswer</groupId>
+            <artifactId>OnlineEducation-Base</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <!--存在mybatisplus注解添加相关注解保证不报错-->
         <dependency>

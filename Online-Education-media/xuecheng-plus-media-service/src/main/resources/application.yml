@@ -1,0 +1,7 @@
+minio:
+  endpoint: http://47.113.185.5:9000
+  accessKey: @lncminio007
+  secretKey: @lncminio007
+  bucket:
+    files: mediafiles
+    videofiles: video

@@ -19,6 +19,30 @@ public class MediaFiles implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public MediaFiles(String id, Long companyId, String companyName, String filename, String fileType, String tags, String bucket, String filePath, String fileId, String url, String username, LocalDateTime createDate, LocalDateTime changeDate, String status, String remark, String auditStatus, String auditMind, Long fileSize) {
+        this.id = id;
+        this.companyId = companyId;
+        this.companyName = companyName;
+        this.filename = filename;
+        this.fileType = fileType;
+        this.tags = tags;
+        this.bucket = bucket;
+        this.filePath = filePath;
+        this.fileId = fileId;
+        this.url = url;
+        this.username = username;
+        this.createDate = createDate;
+        this.changeDate = changeDate;
+        this.status = status;
+        this.remark = remark;
+        this.auditStatus = auditStatus;
+        this.auditMind = auditMind;
+        this.fileSize = fileSize;
+    }
+
+    public MediaFiles() {
+    }
+
     /**
      * 主键
      */
