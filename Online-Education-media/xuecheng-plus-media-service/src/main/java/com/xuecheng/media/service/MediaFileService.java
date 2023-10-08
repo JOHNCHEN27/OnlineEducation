@@ -1,9 +1,9 @@
 package com.xuecheng.media.service;
 
 
-import com.lncanswer.base.model.PageParams;
-import com.lncanswer.base.model.PageResult;
-import com.lncanswer.base.result.RestResponse;
+import com.xuecheng.base.model.PageParams;
+import com.xuecheng.base.model.PageResult;
+import com.xuecheng.base.result.RestResponse;
 import com.xuecheng.media.model.dto.QueryMediaParamsDto;
 import com.xuecheng.media.model.dto.UploadFileParamsDto;
 import com.xuecheng.media.model.dto.UploadFileResultDto;

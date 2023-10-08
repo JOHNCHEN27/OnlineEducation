@@ -4,10 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.j256.simplemagic.ContentInfo;
 import com.j256.simplemagic.ContentInfoUtil;
-import com.lncanswer.base.exception.OnlieEducationException;
-import com.lncanswer.base.model.PageParams;
-import com.lncanswer.base.model.PageResult;
-import com.lncanswer.base.result.RestResponse;
+import com.xuecheng.base.exception.OnlieEducationException;
+import com.xuecheng.base.model.PageParams;
+import com.xuecheng.base.model.PageResult;
+import com.xuecheng.base.result.RestResponse;
 import com.xuecheng.media.mapper.MediaFilesMapper;
 import com.xuecheng.media.model.dto.QueryMediaParamsDto;
 import com.xuecheng.media.model.dto.UploadFileParamsDto;
@@ -42,11 +42,11 @@ import java.util.stream.Stream;
  * @version 1.0
  */
 @Slf4j
- @Service
+@Service
 public class MediaFileServiceImpl implements MediaFileService {
 
   @Autowired
- MediaFilesMapper mediaFilesMapper;
+  MediaFilesMapper mediaFilesMapper;
 
   //注入MinioClient委托Bean对象
  @Autowired
