@@ -472,4 +472,21 @@ public class MediaFileServiceImpl implements MediaFileService {
  private String getFileMergePath(String fileMd5,String fileExt) {
   return fileMd5.substring(0,1) +"/" + fileMd5.substring(1,2) + "/" +fileMd5 +"/" +fileMd5+fileExt;
  }
+
+
+
+ /**
+  * 接触课程计划和媒资信息的绑定
+  *
+  * @param teachPlanId 课程计划id
+  * @param mediaId     媒体id
+  */
+ @Override
+ public int removeassociationMedia(Long teachPlanId, String mediaId) {
+
+  //将媒资文件删除
+  int delete = mediaFilesMapper.deleteFileId(mediaId);
+
+  return delete;
+ }
 }

@@ -3,6 +3,7 @@ package com.xuecheng.content.api;
 import com.xuecheng.base.exception.OnlieEducationException;
 import com.xuecheng.base.exception.ValidationGroups;
 import com.xuecheng.base.result.ResultClass;
+import com.xuecheng.content.model.dto.BindTeachplanMediaDto;
 import com.xuecheng.content.model.dto.SaveTeachplanDto;
 import com.xuecheng.content.model.dto.TeachplanDto;
 import com.xuecheng.content.service.TeachplanService;
@@ -78,6 +79,7 @@ public class TeachPlanController {
      * @param
      * @return
      */
+    @ApiOperation(value = "课程计划向下移动")
     @PostMapping("/movedown/{id}")
     public ResultClass swapTeachplanOrder(@PathVariable ("id") Integer id){
         if (id != null ){
@@ -93,6 +95,7 @@ public class TeachPlanController {
      * @param
      * @return
      */
+    @ApiOperation(value = "课程计划向上移动")
     @PostMapping("/moveup/{id}")
     public ResultClass moveupTeachplan(@PathVariable("id") Integer id){
         if (id != null ){
@@ -104,4 +107,16 @@ public class TeachPlanController {
         }
         return ResultClass.error("参数错误请重试");
     }
+
+    /**
+     * 课程计划和媒资信息绑定
+     * @param bindTeachplanMediaDto
+     */
+    @ApiOperation(value = "课程计划和媒资信息绑定")
+    @PostMapping("/teachplan/association/media")
+    public void associationMedia(@RequestBody BindTeachplanMediaDto bindTeachplanMediaDto){
+        teachplanService.associationMedia(bindTeachplanMediaDto);
+    }
+
+
 }

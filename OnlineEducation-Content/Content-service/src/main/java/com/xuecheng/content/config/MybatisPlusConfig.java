@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2023/9/6 9:47
  */
 @Configuration //配置mybatisPlus分页拦截器
-@MapperScan("com.lncanswer.content.mapper") //配置包扫描的路径
+@MapperScan("com.xuecheng.content.mapper") //配置包扫描的路径
 public class MybatisPlusConfig {
 
     /**

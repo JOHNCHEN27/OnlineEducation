@@ -81,4 +81,6 @@ public interface MediaFileService {
 
  //添加文件到minio
  boolean addMediaFilesToMinIO(String localFilePath, String mimeType, String bucket, String objectName);
+
+ int removeassociationMedia(Long teachPlanId, String mediaId);
 }
