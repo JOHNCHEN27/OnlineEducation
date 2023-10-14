@@ -68,8 +68,20 @@ public class MediaFilesController {
        //上传文件
        UploadFileResultDto uploadFileResultDto = mediaFileService.uploadFile(companyId, uploadFileParamsDto, absolutePath);
        return uploadFileResultDto;
-
    }
+
+    /**
+     * 解除课程计划和媒资信息绑定
+     * @param teachPlanId 课程计划id
+     * @param mediaId 媒资信息id
+     */
+    @ApiOperation(value = "接触课程计划和媒资信息绑定")
+    @DeleteMapping("teachplan/association/media/{teachPlanId}/{mediaId}")
+    public void removeassociationMedia(@PathVariable("teachPlanId") Long teachPlanId,
+                                       @PathVariable("mediaId") String mediaId){
+        mediaFileService.removeassociationMedia(teachPlanId, mediaId);
+
+    }
 
 
 

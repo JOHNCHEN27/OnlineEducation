@@ -16,8 +16,9 @@ spring:
         - data-id: common-${spring.profiles.active}.yaml
           group: online-education-common
           refresh: true
-
-#profiles默认为dev
+    config:
+      override-none: true  #本地配置优先
+  #profiles默认为dev
   profiles:
     active: dev
 

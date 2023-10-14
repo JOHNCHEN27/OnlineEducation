@@ -14,3 +14,6 @@ DELETE {{content_host}}/content/teachplan/294
 
 ###
 DELETE {{content_host}}/content/course/130
+
+###
+DELETE {{media_host}}/media/teachplan/association/media/282/1f229319d6fed3431d2f9d06193a433b

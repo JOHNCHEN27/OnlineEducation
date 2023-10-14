@@ -9,10 +9,12 @@ import com.xuecheng.base.model.PageParams;
 import com.xuecheng.base.model.PageResult;
 import com.xuecheng.base.result.RestResponse;
 import com.xuecheng.media.mapper.MediaFilesMapper;
+import com.xuecheng.media.mapper.MediaProcessMapper;
 import com.xuecheng.media.model.dto.QueryMediaParamsDto;
 import com.xuecheng.media.model.dto.UploadFileParamsDto;
 import com.xuecheng.media.model.dto.UploadFileResultDto;
 import com.xuecheng.media.model.po.MediaFiles;
+import com.xuecheng.media.model.po.MediaProcess;
 import com.xuecheng.media.service.MediaFileService;
 import io.minio.*;
 import io.minio.messages.DeleteError;
@@ -55,6 +57,9 @@ public class MediaFileServiceImpl implements MediaFileService {
  //事务优化，注入代理对象 非事务方法调用事务方法事务不生效，通过提升为接口，用代理对象来调用
  @Autowired
  MediaFileService currentPoxt;
+
+ @Autowired
+ MediaProcessMapper mediaProcessMapper;
 
  //获取配置文件中属性，普通文件bucket
  @Value("$(minio.bucket.files)")
@@ -161,7 +166,34 @@ public class MediaFileServiceImpl implements MediaFileService {
    }
    log.debug("保存文件信息到数据库成功:{}",mediaFiles.toString());
   }
+
+  //添加到到待处理任务表
+  addWaitingTask(mediaFiles);
   return mediaFiles;
+ }
+
+ /**
+  * 判断当前文件类型，记录文件是否需要处理
+  * @param mediaFiles
+  */
+ public void addWaitingTask(MediaFiles mediaFiles) {
+  //获取文件名称
+  String filename = mediaFiles.getFilename();
+  //获取文件后缀
+  String extension = filename.substring(filename.lastIndexOf("."));
+  //获取文件的mineType
+  String mimeType = getMimeType(extension);
+  //判断是否是avi或者其他需要处理的文件（可以写入配置文件中）
+  if (mimeType.equals("video/x-msvideo")){
+   //如果是avi文件则记录当前文件类型到待处理任务表
+   MediaProcess mediaProcess = new MediaProcess();
+   BeanUtils.copyProperties(mediaFiles,mediaProcess);
+   mediaProcess.setStatus("1"); //设置状态为1 表示任务未处理
+   mediaProcess.setFailCount(0); //失败次数默认为0
+   mediaProcess.setCreateDate(LocalDateTime.now());
+   //添加待处理任务到MediaProcess数据库
+   mediaProcessMapper.insert(mediaProcess);
+  }
  }
 
  /**
@@ -172,7 +204,7 @@ public class MediaFileServiceImpl implements MediaFileService {
   * @param objectName
   * @return
   */
- private boolean addMediaFilesToMinIO(String localFilePath, String mimeType, String bucket, String objectName) {
+ public boolean addMediaFilesToMinIO(String localFilePath, String mimeType, String bucket, String objectName) {
 
   try {
    UploadObjectArgs uploadFile = UploadObjectArgs.builder().bucket(bucket).object(objectName).filename(localFilePath)
@@ -413,7 +445,7 @@ public class MediaFileServiceImpl implements MediaFileService {
  }
 
  //MinIO下载文件
- private File downloadFileFromMinIO(String bucketVideofiles, String chunkFilePath) {
+ public File downloadFileFromMinIO(String bucketVideofiles, String chunkFilePath) {
   File minIOFile = null;
   try {
    InputStream inputStream = minioClient.getObject(GetObjectArgs.builder()
@@ -439,5 +471,22 @@ public class MediaFileServiceImpl implements MediaFileService {
   */
  private String getFileMergePath(String fileMd5,String fileExt) {
   return fileMd5.substring(0,1) +"/" + fileMd5.substring(1,2) + "/" +fileMd5 +"/" +fileMd5+fileExt;
+ }
+
+
+
+ /**
+  * 接触课程计划和媒资信息的绑定
+  *
+  * @param teachPlanId 课程计划id
+  * @param mediaId     媒体id
+  */
+ @Override
+ public int removeassociationMedia(Long teachPlanId, String mediaId) {
+
+  //将媒资文件删除
+  int delete = mediaFilesMapper.deleteFileId(mediaId);
+
+  return delete;
  }
 }

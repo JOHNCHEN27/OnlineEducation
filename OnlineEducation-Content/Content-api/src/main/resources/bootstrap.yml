@@ -22,6 +22,9 @@ spring:
             - data-id: common-${spring.profiles.active}.yaml
               group: online-education-common
               refresh: true
+            - data-id: freemarker-config-${spring.profiles.active}.yaml
+              group: online-education-common
+              refresh: true
   profiles:
       active: dev
 

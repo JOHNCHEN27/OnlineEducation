@@ -1,4 +1,4 @@
-package com.xuecheng;
+package com.xuecheng.content;
 
 import com.spring4all.swagger.EnableSwagger2Doc;
 import org.springframework.boot.SpringApplication;
