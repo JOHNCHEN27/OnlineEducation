@@ -14,7 +14,7 @@ import java.util.List;
 public interface CourseTeacherService extends IService<CourseTeacher> {
 
     //查询教师接口
-    public List<CourseTeacher> selectCourseTeacher(Integer id);
+    public List<CourseTeacher> selectCourseTeacher(Long id);
 
     //添加教师
     public CourseTeacher saveCourseTeacher(Long companyId,CourseTeacher courseTeacher);

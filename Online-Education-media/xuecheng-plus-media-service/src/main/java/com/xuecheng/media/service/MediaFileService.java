@@ -83,4 +83,6 @@ public interface MediaFileService {
  boolean addMediaFilesToMinIO(String localFilePath, String mimeType, String bucket, String objectName);
 
  int removeassociationMedia(Long teachPlanId, String mediaId);
+
+ MediaFiles getFileById(String mediaId);
 }

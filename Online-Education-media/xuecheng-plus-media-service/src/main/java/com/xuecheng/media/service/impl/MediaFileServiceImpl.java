@@ -489,4 +489,15 @@ public class MediaFileServiceImpl implements MediaFileService {
 
   return delete;
  }
+
+ /**
+  * 根据媒资id查询文件信息
+  * @param mediaId
+  * @return
+  */
+ @Override
+ public MediaFiles getFileById(String mediaId) {
+  MediaFiles mediaFiles = mediaFilesMapper.selectById(mediaId);
+  return mediaFiles;
+ }
 }

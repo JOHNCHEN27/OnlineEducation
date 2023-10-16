@@ -34,7 +34,7 @@ public class CourseTeacherServiceImpl extends ServiceImpl<CourseTeacherMapper,Co
      * @return
      */
     @Override
-    public List<CourseTeacher> selectCourseTeacher(Integer id) {
+    public List<CourseTeacher> selectCourseTeacher(Long id) {
         LambdaQueryWrapper<CourseTeacher> lamQuery = new LambdaQueryWrapper<>();
         lamQuery.eq(id != null,CourseTeacher::getCourseId,id);
         List<CourseTeacher> teacherList = this.list(lamQuery);
