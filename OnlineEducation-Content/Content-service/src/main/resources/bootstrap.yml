@@ -1,0 +1,25 @@
+#微服务配置 将其放到测试单元的resource下 进行单元测试使用
+spring:
+  application:
+    name: content-service
+  cloud:
+    nacos:
+      server-addr: localhost:8848
+      discovery:
+        namespace: e101b790-f564-479a-af1e-a065bc11f7e1
+        group: online-education-project
+      config:
+        namespace: e101b790-f564-479a-af1e-a065bc11f7e1  #nacos配置的命名空间
+        group: online-education-project #nacos配置的组
+        file-extension: yaml #nacos配置的后缀
+        refresh-enabled: true
+  profiles: #profiles默认为True
+    active: dev
+  redis:
+    host: 47.113.185.5
+    port: 6379
+
+  # 日志文件配置路径
+
+  logging:
+    config: classpath:log4j2-dev.xml

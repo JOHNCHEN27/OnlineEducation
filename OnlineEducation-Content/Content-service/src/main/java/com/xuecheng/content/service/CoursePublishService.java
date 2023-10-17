@@ -19,4 +19,7 @@ public interface CoursePublishService {
 
     //根据机构id和课程id 进行课程审核
     void  commitAudit(Long companyId, Long courseId);
+
+    //根据课程id、机构id进行课程发布
+    void coursePublish(Long companyId, Long courseId);
 }

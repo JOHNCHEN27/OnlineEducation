@@ -1,25 +1,27 @@
 package com.xuecheng.content.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.xuecheng.base.exception.CommonError;
 import com.xuecheng.base.exception.OnlieEducationException;
 import com.xuecheng.content.mapper.CourseBaseMapper;
 import com.xuecheng.content.mapper.CourseMarketMapper;
+import com.xuecheng.content.mapper.CoursePublishMapper;
 import com.xuecheng.content.mapper.CoursePublishPreMapper;
 import com.xuecheng.content.model.dto.CourseBaseInfoDto;
 import com.xuecheng.content.model.dto.CoursePreviewDto;
 import com.xuecheng.content.model.dto.TeachplanDto;
-import com.xuecheng.content.model.po.CourseBase;
-import com.xuecheng.content.model.po.CourseMarket;
-import com.xuecheng.content.model.po.CoursePublishPre;
-import com.xuecheng.content.model.po.CourseTeacher;
+import com.xuecheng.content.model.po.*;
 import com.xuecheng.content.service.CourseBaseInfoService;
 import com.xuecheng.content.service.CoursePublishService;
 import com.xuecheng.content.service.CourseTeacherService;
 import com.xuecheng.content.service.TeachplanService;
+import com.xuecheng.messagesdk.model.po.MqMessage;
+import com.xuecheng.messagesdk.service.MqMessageService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -51,6 +53,12 @@ public class CoursePublishServiceImpl implements CoursePublishService {
 
     @Autowired
     CourseTeacherService courseTeacherService;
+
+    @Autowired
+    CoursePublishMapper coursePublishMapper;
+
+    @Autowired
+    MqMessageService mqMessageService;
 
 
     /**
@@ -143,6 +151,64 @@ public class CoursePublishServiceImpl implements CoursePublishService {
         //更新课程基本信息表的状态
         courseBase.setAuditStatus("202003");
         courseBaseMapper.updateById(courseBase);
+
+    }
+
+    /**
+     * 课程发布
+     * @param companyId
+     * @param courseId
+     */
+    @Transactional
+    @Override
+    public void coursePublish(Long companyId, Long courseId) {
+        CoursePublishPre coursePublishPre = coursePublishPreMapper.selectById(courseId);
+        if (coursePublishPre == null){
+            OnlieEducationException.cast("请先提交课程审核，审核通过之后才可以发布");
+        }
+        //只允许本机构的来发布课程
+        if (!coursePublishPre.getCompanyId().equals(companyId)){
+            OnlieEducationException.cast("不允许提交其他机构的课程");
+        }
+        //课程审核通过才可以发布
+        if (!coursePublishPre.getStatus().equals("202004")){
+            OnlieEducationException.cast("课程审核通过之后才可以发布课程");
+        }
+
+        //保存课程发布信息
+        CoursePublish coursePublish = new CoursePublish();
+        BeanUtils.copyProperties(coursePublishPre,coursePublish);
+        coursePublish.setStatus("203002");
+        //更新课程发布表之前查询是否存在，存在则更新不存在则插入
+        CoursePublish coursePublish1 = coursePublishMapper.selectById(courseId);
+        if (coursePublish1 == null){
+            //课程发布表中不存在则插入
+            coursePublishMapper.insert(coursePublish);
+        }else {
+            coursePublishMapper.updateById(coursePublish);
+        }
+
+        //插入信息到消息表中 使用SDK示例来完成
+        saveCoursePublishMessage(courseId);
+
+        //更新课程基本表的状态
+        CourseBase courseBase = courseBaseMapper.selectById(courseId);
+        courseBase.setStatus("203002");
+        courseBaseMapper.updateById(courseBase);
+
+        //删除课程预发布表的信息
+        coursePublishPreMapper.deleteById(courseId);
+    }
+
+    /**
+     * 保存消息表记录
+     * @param courseId
+     */
+    public void saveCoursePublishMessage(Long courseId) {
+        MqMessage mqMessage = mqMessageService.addMessage("course_publish",String.valueOf(courseId),null,null);
+        if (mqMessage == null){
+            OnlieEducationException.cast(CommonError.UNKOWN_ERROR);
+        }
 
     }
 }
