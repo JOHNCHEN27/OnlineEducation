@@ -13,6 +13,10 @@ spring:
         group: online-education-project #nacos配置的组
         file-extension: yaml #nacos配置的后缀
         refresh-enabled: true
+        shared-configs:
+          - data-id: feign-${spring.profiles.active}.yaml
+            group: online-education-common
+            refresh: true
   profiles: #profiles默认为True
     active: dev
   redis:
@@ -23,3 +27,4 @@ spring:
 
   logging:
     config: classpath:log4j2-dev.xml
+  

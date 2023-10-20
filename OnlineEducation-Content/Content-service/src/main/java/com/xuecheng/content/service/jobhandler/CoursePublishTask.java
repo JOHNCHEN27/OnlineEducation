@@ -1,12 +1,22 @@
 package com.xuecheng.content.service.jobhandler;
 
+import com.xuecheng.base.exception.OnlieEducationException;
+import com.xuecheng.content.feignclient.SearchServiceClient;
+import com.xuecheng.content.mapper.CoursePublishMapper;
+import com.xuecheng.content.model.po.CourseIndex;
+import com.xuecheng.content.model.po.CoursePublish;
+import com.xuecheng.content.service.CoursePublishService;
 import com.xuecheng.messagesdk.model.po.MqMessage;
 import com.xuecheng.messagesdk.service.MessageProcessAbstract;
 import com.xuecheng.messagesdk.service.MqMessageService;
 import com.xxl.job.core.context.XxlJobHelper;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.io.File;
 
 /**
  * @author LNC
@@ -18,6 +28,14 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class CoursePublishTask extends MessageProcessAbstract {
 
+    @Autowired
+    CoursePublishService coursePublishService;
+
+    @Autowired
+    CoursePublishMapper coursePublishMapper;
+
+    @Autowired
+    SearchServiceClient searchServiceClient;
 
     //任务调度入口
     @XxlJob("CoursePublishJobHandler")
@@ -62,7 +80,15 @@ public class CoursePublishTask extends MessageProcessAbstract {
             return;
         }
         //将课程信息保存到索引库 TODO
-
+        CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
+        //拷贝索引对象
+        CourseIndex courseIndex = new CourseIndex();
+        BeanUtils.copyProperties(coursePublish,courseIndex);
+        //Feign远程调用搜索服务api添加课程信息
+        Boolean add = searchServiceClient.add(courseIndex);
+        if (!add){
+            OnlieEducationException.cast("添加索引失败");
+        }
         //设置消息表课程信息状态已保存
         mqMessageService.completedStageThree(id);
     }
@@ -99,8 +125,11 @@ public class CoursePublishTask extends MessageProcessAbstract {
             log.info("课程静态化页面已经完成，课程id：{}",courseId);
             return;
         }
-        //将课程信息进行静态化存储到minio TODO
-
+        //将课程信息进行静态化存储到minio
+        File file = coursePublishService.generateCourseHtml(courseId);
+        if (file !=null){
+            coursePublishService.uploadCourseHtml(courseId,file);
+        }
         mqMessageService.completedStageOne(id);
 
     }

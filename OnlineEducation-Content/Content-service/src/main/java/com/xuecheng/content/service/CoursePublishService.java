@@ -2,6 +2,8 @@ package com.xuecheng.content.service;
 
 import com.xuecheng.content.model.dto.CoursePreviewDto;
 
+import java.io.File;
+
 /**
  * @author LNC
  * @version 1.0
@@ -22,4 +24,10 @@ public interface CoursePublishService {
 
     //根据课程id、机构id进行课程发布
     void coursePublish(Long companyId, Long courseId);
+
+    //课程静态化
+    public File generateCourseHtml(Long courseId);
+
+    //上传课程静态化页面
+    public void uploadCourseHtml(Long courseId,File file);
 }

@@ -20,7 +20,7 @@ public class XxlJobConfig {
     private String adminAddresses ;
 
     @Value("${xxl.job.accessToken}")
-    private String accessToken ;
+    private String accessToken;
 
     @Value("${xxl.job.executor.appname}")
     private String appname ;
@@ -38,7 +38,7 @@ public class XxlJobConfig {
     private String logPath ;
 
     @Value("${xxl.job.executor.logretentiondays}")
-    private int logRetentionDays ;
+    private int logRetentionDays;
 
 
     @Bean
