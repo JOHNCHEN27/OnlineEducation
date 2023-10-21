@@ -5,8 +5,3 @@ minio:
   bucket:
     files: mediafiles
     videofiles: video
-
-spring:
-  cloud:
-    inetutils:
-      preferred-networks:

@@ -12,10 +12,10 @@ spring:
         group: online-education-project
         file-extension: yaml
         refresh-enabled: true
-      shared-configs:
-        - data-id: common-${spring.profiles.active}.yaml
-          group: online-education-common
-          refresh: true
+        shared-configs:
+             - data-id: common-${spring.profiles.active}.yaml
+               group: online-education-common
+               refresh: true
     config:
       override-none: true  #本地配置优先
   #profiles默认为dev

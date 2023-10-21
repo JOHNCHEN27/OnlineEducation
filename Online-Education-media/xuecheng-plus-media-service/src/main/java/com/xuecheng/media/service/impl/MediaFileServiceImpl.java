@@ -25,7 +25,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,12 +62,12 @@ public class MediaFileServiceImpl implements MediaFileService {
  MediaProcessMapper mediaProcessMapper;
 
  //获取配置文件中属性，普通文件bucket
- @Value("$(minio.bucket.files)")
- private String bucket_Files;
+ //@Value("${minio.bucket.files}")
+ private String bucket_Files = "mediafiles";
 
  //获取配置文件中的属性
- @Value("$(minio.bucket.videofiles)")
- private String bucket_videofiles;
+ //@Value("${minio.bucket.videofiles}")
+ private String bucket_videofiles = "video";
 
  @Override
  public PageResult<MediaFiles> queryMediaFiels(Long companyId, PageParams pageParams, QueryMediaParamsDto queryMediaParamsDto) {
@@ -210,6 +209,7 @@ public class MediaFileServiceImpl implements MediaFileService {
  public boolean addMediaFilesToMinIO(String localFilePath, String mimeType, String bucket, String objectName) {
 
   try {
+   System.out.println(bucket);
    UploadObjectArgs uploadFile = UploadObjectArgs.builder().bucket(bucket).object(objectName).filename(localFilePath)
            .contentType(mimeType)
            .build();
