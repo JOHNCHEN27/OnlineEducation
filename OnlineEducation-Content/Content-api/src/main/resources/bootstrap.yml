@@ -15,14 +15,17 @@ spring:
         refresh-enabled: true
         extension-configs:
             #这里因为apim模块引用了service模块，所有需要读取nacos上service的配置
-            data-id: content-service-${spring.profiles.active}.yaml
-            group: online-education-project
-            refresh: true
+           - data-id: content-service-${spring.profiles.active}.yaml
+             group: online-education-project
+             refresh: true
         shared-configs:  #共享公用配置
             - data-id: common-${spring.profiles.active}.yaml
               group: online-education-common
               refresh: true
             - data-id: freemarker-config-${spring.profiles.active}.yaml
+              group: online-education-common
+              refresh: true
+            - data-id: feign-${spring.profiles.active}.yaml
               group: online-education-common
               refresh: true
   profiles:

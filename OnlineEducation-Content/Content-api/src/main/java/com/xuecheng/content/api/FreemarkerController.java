@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * @author LNC
  * @version 1.0
- * @description freemarker测试
+ * @description freemarker模板引擎
  * @date 2023/10/14 17:37
  */
 @Controller

@@ -35,7 +35,7 @@ public class CourseTeacherController {
      */
     @ApiOperation(value = "查询课程计划教师",notes = "课程id必传")
     @GetMapping("/courseTeacher/list/{id}")
-    public List<CourseTeacher> queryCourseTeacherList(@PathVariable("id") Integer id){
+    public List<CourseTeacher> queryCourseTeacherList(@PathVariable("id") Long id){
         if (id != null){
            List<CourseTeacher> list = teacherService.selectCourseTeacher(id);
            if (list != null && !list.isEmpty()){

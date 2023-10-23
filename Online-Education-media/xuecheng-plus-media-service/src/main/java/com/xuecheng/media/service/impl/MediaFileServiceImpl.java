@@ -22,9 +22,9 @@ import io.minio.messages.DeleteObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,12 +62,12 @@ public class MediaFileServiceImpl implements MediaFileService {
  MediaProcessMapper mediaProcessMapper;
 
  //获取配置文件中属性，普通文件bucket
- @Value("$(minio.bucket.files)")
- private String bucket_Files;
+ //@Value("${minio.bucket.files}")
+ private String bucket_Files = "mediafiles";
 
  //获取配置文件中的属性
- @Value("$(minio.bucket.videofiles)")
- private String bucket_videofiles;
+ //@Value("${minio.bucket.videofiles}")
+ private String bucket_videofiles = "video";
 
  @Override
  public PageResult<MediaFiles> queryMediaFiels(Long companyId, PageParams pageParams, QueryMediaParamsDto queryMediaParamsDto) {
@@ -97,7 +97,7 @@ public class MediaFileServiceImpl implements MediaFileService {
   * @return
   */
  @Override
- public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath) {
+ public UploadFileResultDto uploadFile(Long companyId, UploadFileParamsDto uploadFileParamsDto, String localFilePath,String objectName) {
   //根据路径创建File 用来对此文件进行md5加密
   File file = new File(localFilePath);
   if (!file.exists()){
@@ -117,7 +117,9 @@ public class MediaFileServiceImpl implements MediaFileService {
   String defaultFoladerPath = getDefaultFoladerPath();
 
   //上传到minio中bucket桶的对象名
-  String objectName = defaultFoladerPath + fileMd5 + extension;
+  if (StringUtils.isEmpty(objectName)){
+    objectName = defaultFoladerPath + fileMd5 + extension;
+  }
 
   //将文件上传到minio中
   boolean b = addMediaFilesToMinIO(localFilePath, mimeType, bucket_Files, objectName);
@@ -207,6 +209,7 @@ public class MediaFileServiceImpl implements MediaFileService {
  public boolean addMediaFilesToMinIO(String localFilePath, String mimeType, String bucket, String objectName) {
 
   try {
+   System.out.println(bucket);
    UploadObjectArgs uploadFile = UploadObjectArgs.builder().bucket(bucket).object(objectName).filename(localFilePath)
            .contentType(mimeType)
            .build();
@@ -488,5 +491,16 @@ public class MediaFileServiceImpl implements MediaFileService {
   int delete = mediaFilesMapper.deleteFileId(mediaId);
 
   return delete;
+ }
+
+ /**
+  * 根据媒资id查询文件信息
+  * @param mediaId
+  * @return
+  */
+ @Override
+ public MediaFiles getFileById(String mediaId) {
+  MediaFiles mediaFiles = mediaFilesMapper.selectById(mediaId);
+  return mediaFiles;
  }
 }
