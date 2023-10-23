@@ -1,0 +1,7 @@
+#携带Jwt令牌访问相关资源
+GET http://localhost:60010/content/course/2
+Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsieHVlY2hlbmctcGx1cyJdLCJ1c2VyX25hbWUiOiJ6aGFuZ3NhbiIsInNjb3BlIjpbImFsbCJdLCJleHAiOjE2OTc5ODQwNzQsImF1dGhvcml0aWVzIjpbInAxIl0sImp0aSI6ImE2MmM2MjY5LTUwNDItNGM1ZC1hMDg1LTlhMDJjOWI3ZTY5OCIsImNsaWVudF9pZCI6IlhjV2ViQXBwIn0.zD9PVRfOpfgW2O8hRQPXg1KChtv48H_UUhgD1qgOYTk
+
+
+###OAuth2 密码模式获取Jwt令牌
+POST {{auth_host}}/auth/oauth/token?client_id=XcWebApp&client_secret=XcWebApp&grant_type=password&username=zhangsan&password=123

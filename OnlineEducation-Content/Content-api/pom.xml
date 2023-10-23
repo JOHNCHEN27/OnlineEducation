@@ -68,6 +68,16 @@
             <artifactId>spring-boot-starter-freemarker</artifactId>
         </dependency>
 
+<!--        SpringSecurity OAuth2授权认证-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+        </dependency>
+
     </dependencies>
 
 
