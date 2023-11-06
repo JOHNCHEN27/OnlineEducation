@@ -11,11 +11,11 @@ import com.xuecheng.content.model.dto.QueryCourseParamsDto;
 import com.xuecheng.content.model.po.CourseBase;
 import com.xuecheng.content.service.CourseBaseInfoService;
 import com.xuecheng.content.service.CourseBaseService;
+import com.xuecheng.content.util.SecurityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,8 +76,11 @@ public class CourseBaseInfoController {
     @GetMapping("/{courseId}")
     public CourseBaseInfoDto getCourseBaseById(@PathVariable Long courseId){
         //取出当前用户身份
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println(principal);
+       // Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        //测试工具类SecurityUtil 获取当前用户身份
+        SecurityUtil.XcUser user = SecurityUtil.getUser();
+        System.out.println(user);
 
         CourseBaseInfoDto courseBaseInfoDto = courseBaseInfoService.getCourseBaseInfo(courseId);
         return courseBaseInfoDto;

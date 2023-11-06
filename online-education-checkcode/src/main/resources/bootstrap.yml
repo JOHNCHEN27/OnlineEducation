@@ -1,6 +1,6 @@
 spring:
   application:
-    name: auth-service
+    name: checkcode
   cloud:
     nacos:
       server-addr: localhost:8848
@@ -16,7 +16,7 @@ spring:
           - data-id: common-${spring.profiles.active}.yaml
             group: online-education-common
             refresh: true
-          - data-id: feign-${spring.profiles.active}.yaml
+          - data-id: redis-${spring.profiles.active}.yaml
             group: online-education-common
             refresh: true
 
