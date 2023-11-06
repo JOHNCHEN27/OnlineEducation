@@ -3,6 +3,9 @@ package com.xuecheng;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableFeignClients(basePackages = "com.xuecheng.*.feignclient")
@@ -10,6 +13,17 @@ public class AuthApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AuthApplication.class, args);
+    }
+
+    /**
+     * 创建一个ResttemplateBean 用来调用第三方服务
+     * 微服务之间调用用Feign
+     * @return
+     */
+    @Bean
+    RestTemplate restTemplate(){
+        RestTemplate restTemplate = new RestTemplate(new OkHttp3ClientHttpRequestFactory());
+        return restTemplate;
     }
 
 }
