@@ -16,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +44,7 @@ public class CourseBaseInfoController {
      * @return
      */
     @ApiOperation("课程查询接口") //对此方法的接口描述
+    @PreAuthorize("hasAuthority('xc_teachmanager_course_list')") //判断是否拥有此权限
     @PostMapping ("/list")//RequestMapping会生成所有类型的接口上传方法
     public PageResult<CourseBase> list    //required = false 表示此参数不是必填项
             (PageParams pageParams, @RequestBody(required = false) QueryCourseParamsDto queryCourseParamsDto){
@@ -53,7 +55,12 @@ public class CourseBaseInfoController {
 //        List<CourseBase> courseBases = new ArrayList<>();
 //        courseBases.add(courseBase);
 //        PageResult<CourseBase> pageResult = new PageResult<>(courseBases,10,1,10);
-        PageResult<CourseBase> pageResult = courseBaseService.selectCourseBasePage(pageParams,queryCourseParamsDto);
+        //取出用户身份
+        SecurityUtil.XcUser user = SecurityUtil.getUser();
+        //取出机构id 根据机构id查询相应课程
+        String companyId = user.getCompanyId();
+        PageResult<CourseBase> pageResult = courseBaseService.selectCourseBasePage(Long.parseLong(companyId),pageParams,queryCourseParamsDto);
+
            return pageResult;
     }
 

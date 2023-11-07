@@ -46,6 +46,10 @@ public class GlobalExceptionHandler {
     public RestErrorResponse exception(Exception e) {
 
         log.error("【系统异常】{}",e.getMessage(),e);
+        //捕获SpringSecurity产生的无法访问问题
+        if (e.getMessage().equals("不允许访问")){
+            return new RestErrorResponse("没有操作此功能的权限");
+        }
         //返回一个枚举类型的错误异常信息
         return new RestErrorResponse(CommonError.UNKOWN_ERROR.getErrMessage());
     }
