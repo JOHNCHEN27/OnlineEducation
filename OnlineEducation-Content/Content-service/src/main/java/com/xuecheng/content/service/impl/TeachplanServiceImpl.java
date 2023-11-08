@@ -207,7 +207,7 @@ public class TeachplanServiceImpl implements TeachplanService {
         LambdaQueryWrapper<Teachplan> lamQuery = new LambdaQueryWrapper<>();
         lamQuery.eq(Teachplan::getCourseId, saveTeachplanDto.getCourseId());
         lamQuery.eq(Teachplan::getParentid, saveTeachplanDto.getParentid());
-        Integer count = teachplanMapper.selectCount(lamQuery);
+        Integer count = Integer.parseInt(String.valueOf(teachplanMapper.selectCount(lamQuery)));
         return count;
     }
 

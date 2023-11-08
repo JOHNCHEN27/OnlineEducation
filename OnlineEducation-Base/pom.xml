@@ -10,8 +10,6 @@
         <relativePath>../OnlineEducation-Parent</relativePath>
     </parent>
 
-
-    <groupId>com.lncanswer</groupId>
     <artifactId>OnlineEducation-Base</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>OnlineEducation-Base</name>
