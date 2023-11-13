@@ -13,6 +13,7 @@ import com.xuecheng.learning.model.po.XcCourseTables;
 import com.xuecheng.learning.service.MyCourseTablesService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -24,6 +25,7 @@ import java.util.List;
  * @description
  * @date 2023/11/9 15:19
  */
+@Service
 public class MyCourseTablesServiceImpl implements MyCourseTablesService {
     @Autowired
     XcCourseTablesMapper xcCourseTablesMapper;
