@@ -21,6 +21,9 @@ spring:
           - data-id: common-${spring.profiles.active}.yaml
             group: online-education-common
             refresh: true
+          - data-id: rabbitmq-${spring.profiles.active}.yaml
+            group: online-education-common
+            refresh: true
 
   profiles:
     active: dev

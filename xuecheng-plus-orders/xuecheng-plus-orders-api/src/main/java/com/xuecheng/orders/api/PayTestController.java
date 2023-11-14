@@ -8,8 +8,9 @@ import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.xuecheng.orders.config.AlipayConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +27,7 @@ import java.util.Map;
  * @description 测试支付宝接口
  * @date 2023/11/10 12:30
  */
+@RestController
 @Controller
 public class PayTestController {
 
@@ -39,7 +41,7 @@ public class PayTestController {
 
 
     //订单支付测试
-    @RequestMapping("/alipaytest")
+    @GetMapping("/alipaytest")
     public void doPost(HttpServletRequest httpRequest,
                        HttpServletResponse httpResponse) throws ServletException, IOException, AlipayApiException {
         AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.URL, APP_ID, APP_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, ALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
@@ -60,7 +62,7 @@ public class PayTestController {
     }
 
     //支付结果通知
-    @PostMapping("/paynotify")
+    @PostMapping("/paynotifyTest")
     public void paynotify(HttpServletRequest request,HttpServletResponse response) throws UnsupportedEncodingException, AlipayApiException,IOException {
         Map<String, String> params = new HashMap<String, String>();
         Map requestParams = request.getParameterMap();
