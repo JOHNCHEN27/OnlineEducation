@@ -60,7 +60,12 @@ public class PasswordAuthServiceImpl implements AuthService {
         //检验用户的数据库密码
         String password = user.getPassword();
         String authParamsDtoPassword = authParamsDto.getPassword();
+       // System.out.println("authpassword = " +authParamsDtoPassword );
+
         boolean matches = passwordEn.matches(authParamsDtoPassword,password);
+
+       // System.out.println("password = " +  password+ "authpassword = " +authParamsDtoPassword );
+        System.out.println(matches);
         if (!matches){
             throw new RuntimeException("账号或密码错误");
         }

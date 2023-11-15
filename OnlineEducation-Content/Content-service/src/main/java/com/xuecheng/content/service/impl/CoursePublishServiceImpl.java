@@ -282,6 +282,21 @@ public class CoursePublishServiceImpl implements CoursePublishService {
     }
 
     /**
+     * 查询课程发布信息
+     * @param courseId
+     * @return
+     */
+    @Override
+    public CoursePublish getCoursepublish(Long courseId) {
+        CoursePublish coursePublish = coursePublishMapper.selectById(courseId);
+        if (coursePublish == null){
+            throw new OnlieEducationException("查询发布课程不存在");
+        }
+
+        return coursePublish;
+    }
+
+    /**
      * 保存消息表记录
      * @param courseId
      */

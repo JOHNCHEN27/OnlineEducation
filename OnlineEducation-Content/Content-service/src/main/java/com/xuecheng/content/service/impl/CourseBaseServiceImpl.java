@@ -39,7 +39,7 @@ public class CourseBaseServiceImpl implements CourseBaseService {
      * @return
      */
     @Override
-    public PageResult<CourseBase> selectCourseBasePage(PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto) {
+    public PageResult<CourseBase> selectCourseBasePage(Long CompanyId,PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto) {
 
         //查询数据先从redis中查找 封装课程分页查询的key
         String queryRedis = "selectCourseBasePage";
@@ -65,6 +65,8 @@ public class CourseBaseServiceImpl implements CourseBaseService {
         //查询课程的发布状态
         queryWrapper.eq(StringUtils.isNotEmpty(queryCourseParamsDto.getPublishStatus()),
                 CourseBase::getStatus,queryCourseParamsDto.getPublishStatus());
+        //根据机构id查询所属课程
+        queryWrapper.eq(CourseBase::getCompanyId,CompanyId);
 
         //查询分页 查询出来的结果MybatisPlus会自动存放在page中 可以不用另外的参数接受
         courseBaseMapper.selectPage(page,queryWrapper);

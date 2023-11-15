@@ -16,7 +16,7 @@ public interface CourseBaseService {
      * 创建分页查询的业务层实现接口
      */
 
-    public PageResult<CourseBase> selectCourseBasePage(
+    public PageResult<CourseBase> selectCourseBasePage(Long CompanyId,
             PageParams pageParams, QueryCourseParamsDto queryCourseParamsDto);
 
 }

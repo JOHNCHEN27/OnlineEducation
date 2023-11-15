@@ -36,7 +36,7 @@ public class CourseBaseServiceTests {
         pageParams.setPageNo(1L);//页码
         pageParams.setPageSize(3L);//每页记录数
 
-        PageResult<CourseBase> courseBasePageResult = courseBaseService.selectCourseBasePage(pageParams, queryCourseParamsDto);
+        PageResult<CourseBase> courseBasePageResult = courseBaseService.selectCourseBasePage(null,pageParams, queryCourseParamsDto);
         System.out.println(courseBasePageResult);
     }
 

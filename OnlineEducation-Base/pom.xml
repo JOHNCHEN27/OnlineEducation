@@ -10,8 +10,6 @@
         <relativePath>../OnlineEducation-Parent</relativePath>
     </parent>
 
-
-    <groupId>com.lncanswer</groupId>
     <artifactId>OnlineEducation-Base</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>OnlineEducation-Base</name>
@@ -21,6 +19,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -112,6 +111,8 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
+
+
     </dependencies>
 
 </project>

@@ -1,10 +1,11 @@
 package com.xuecheng.ucenter.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.xuecheng.ucenter.mapper.XcMenuMapper;
 import com.xuecheng.ucenter.mapper.XcUserMapper;
 import com.xuecheng.ucenter.model.dto.AuthParamsDto;
 import com.xuecheng.ucenter.model.dto.XcUserExt;
-import com.xuecheng.ucenter.model.po.XcUser;
+import com.xuecheng.ucenter.model.po.XcMenu;
 import com.xuecheng.ucenter.service.AuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author LNC
@@ -30,6 +34,9 @@ public class UseServiceImpl implements UserDetailsService {
     //注入容器对象来获取Bean
     @Autowired
     ApplicationContext applicationContext;
+
+    @Autowired
+    XcMenuMapper xcMenuMapper;
 
 
     /**
@@ -77,11 +84,25 @@ public class UseServiceImpl implements UserDetailsService {
      * @param user
      * @return
      */
-    private static UserDetails getUserDetails(XcUser user) {
+    private  UserDetails getUserDetails(XcUserExt user) {
         //查询成功，取出数据库存储的正确密码
         String password = user.getPassword();
         //用户权限，如果不加报错：Cannot pass a null GrantedAuthority collection
         String [] authorities = {"p1"};
+
+        List<String> permissions = new ArrayList<>();
+        //查询用户权限
+        List<XcMenu> xcMenus = xcMenuMapper.selectPermissionByUserId(user.getId());
+        if (xcMenus.size() > 0){
+            xcMenus.stream().forEach(menu ->{
+                permissions.add(menu.getCode());
+            });
+        }
+        //将查询到的权限赋值给权限数组
+        authorities = permissions.toArray(new String[0]);
+        //将权限放在xcUser对象中
+        user.setPermissions(permissions);
+
 
         //在UserDetails中username中扩展用户的信息，使其能够转入更多用户信息
         //为了安全在令牌中不放密码
